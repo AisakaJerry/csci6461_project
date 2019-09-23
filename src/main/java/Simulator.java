@@ -19,117 +19,125 @@ public class Simulator {
 
     public static int FindEA(String ins) //Find effective address
     {
-      int addr, indexNum, indirect, address = 0;
-      addr = findAddr(ins); //find address from inputed instruction
-      indexNum = findIndexNumber(ins); // find index register number from inputed instruction
-      indirect = findIndirect(ins); // find indrect numebr from inputed instruction
+        int addr, indexNum, indirect, address = 0;
+        addr = findAddr(ins); //find address from inputed instruction
+        indexNum = findIndexNumber(ins); // find index register number from inputed instruction
+        indirect = findIndirect(ins); // find indrect numebr from inputed instruction
 
-      if(indirect == 0)
-      {
-         if (indexNum == 0) {
-             address = addr;
-         }
-         else {
-               address = Integer.parseInt(indexRegister[indexNum]) + addr;
-         }
-      }
-      if(indirect == 1)
-      {
-         if (indexNum == 0) {
-             address = Integer.parseInt(memory[addr]);
-         }
-         else {
-               address = Integer.parseInt(memory[Integer.parseInt(memory[Integer.parseInt(indexRegister[indexNum])]) + addr]);
-         }
-      }
-      return address;
-   }
+        if(indirect == 0)
+        {
+            if (indexNum == 0) {
+                address = addr;
+            }
+            else {
+                address = Integer.parseInt(indexRegister[indexNum]) + addr;
+            }
+        }
+        if(indirect == 1)
+        {
+            if (indexNum == 0) {
+                address = Integer.parseInt(memory[addr]);
+            }
+            else {
+                address = Integer.parseInt(memory[Integer.parseInt(memory[Integer.parseInt(indexRegister[indexNum])]) + addr]);
+            }
+        }
+        return address;
+    }
 
-   public static int findAddr(String ins)//find address from inputed instruction
-   {
-      int addr = bToD(ins.substring(11,16));
-      return addr;
-   }
+    public static int findAddr(String ins)//find address from inputed instruction
+    {
+        int addr = bToD(ins.substring(11,16));
+        return addr;
+    }
 
-   public int findOpcode(String ins)// find opcode from inputed instruction
-   {
-      int op = bToD(ins.substring(0,6));
-      return op;
-   }
+    public int findOpcode(String ins)// find opcode from inputed instruction
+    {
+        int op = bToD(ins.substring(0,6));
+        return op;
+    }
 
-   public int findGprNumber(String ins)// find GPR number from inputed instruction
-   {
-      int gprN = bToD(ins.substring(8,10));
-      return gprN;
-   }
+    public int findGprNumber(String ins)// find GPR number from inputed instruction
+    {
+        int gprN = bToD(ins.substring(8,10));
+        return gprN;
+    }
 
-   public static int findIndexNumber(String ins)// find index register number from inputed instruction
-   {
-      int indexN = bToD(ins.substring(8,10));
-      return indexN;
-   }
+    public static int findIndexNumber(String ins)// find index register number from inputed instruction
+    {
+        int indexN = bToD(ins.substring(8,10));
+        return indexN;
+    }
 
-   public static int findIndirect(String ins)// find indirect number from inputed instruction
-   {
-      int indirectN = bToD(ins.substring(10,11));
-      return indirectN;
-   }
+    public static int findIndirect(String ins)// find indirect number from inputed instruction
+    {
+        int indirectN = bToD(ins.substring(10,11));
+        return indirectN;
+    }
 
-   public static void LDR(int gprNum, String ins) //LDR instruction
-   {
-      int address;
-      String memoryVal;
-      address = FindEA(ins);
-      mar = Integer.toString(address);
-      memoryVal = memory[address];
-      if (indirect == 0){
-          gpr[gprNum] = memoryVal;
-          mbr = memoryVal;  // update the value in MBR
-      }
-      else {
-         gpr[gprNum] = memory[Integer.parseInt(memory[address])];
-          mbr = memoryVal;
-      }
-   }
+    private static void setIPL(String[] IPL) {
+        IPL[0] = "0000011100011111";  // LDR 3, 0, 31
+        IPL[1] = "0000101101100110";  // STR 3, 1, 6 with indirect
+        IPL[2] = "0000111000011000";  // LDA 2, 24
+        IPL[3] = "1010010001011111";  // LDX 1, 31
+        IPL[4] = "1010100001010000";  // STX 1, 16
+    }
 
-   public static void STR(int gprNum, String ins) // STR instruction
-   {
-      int address;
-      address = FindEA(ins);
-      memory[address] = gpr[gprNum];
-      mbr = memory[address];
-   }
+    public static void LDR(int gprNum, String ins) //LDR instruction
+    {
+        int address;
+        String memoryVal;
+        address = FindEA(ins);
+        mar = Integer.toString(address);
+        memoryVal = memory[address];
+        if (indirect == 0){
+            gpr[gprNum] = memoryVal;
+            mbr = memoryVal;  // update the value in MBR
+        }
+        else {
+            gpr[gprNum] = memory[Integer.parseInt(memory[address])];
+            mbr = memoryVal;
+        }
+    }
 
-   public static void LDA(int gprNum, String ins) //LDA instruction
-   {
-      int address;
-      address = FindEA(ins);
-       gpr[gprNum] = ext216(dToB(address));
-   }
+    public static void STR(int gprNum, String ins) // STR instruction
+    {
+        int address;
+        address = FindEA(ins);
+        memory[address] = gpr[gprNum];
+        mbr = memory[address];
+    }
 
-   public static void LDX(int indexNum, String ins) //LDX instruction
-   {
-      int address;
-      address = FindEA(ins);
-      mar = Integer.toString(address);
-      indexRegister[indexNum] = memory[address];
-      mbr = memory[address];
-   }
+    public static void LDA(int gprNum, String ins) //LDA instruction
+    {
+        int address;
+        address = FindEA(ins);
+        gpr[gprNum] = ext216(dToB(address));
+    }
 
-   public static void STX(int indexNum, String ins)// STX instruction
-   {
-      int address;
-      address = FindEA(ins);
-      memory[address] = indexRegister[indexNum];
-      mbr = memory[address];
-   }
+    public static void LDX(int indexNum, String ins) //LDX instruction
+    {
+        int address;
+        address = FindEA(ins);
+        mar = Integer.toString(address);
+        indexRegister[indexNum] = memory[address];
+        mbr = memory[address];
+    }
 
-   public static int bToD(String bi) //binary to decimal
-   {
-       return Integer.parseInt(bi,2);
-   }
+    public static void STX(int indexNum, String ins)// STX instruction
+    {
+        int address;
+        address = FindEA(ins);
+        memory[address] = indexRegister[indexNum];
+        mbr = memory[address];
+    }
 
-   public static String dToB(int n) { // decimal to binary
+    public static int bToD(String bi) //binary to decimal
+    {
+        return Integer.parseInt(bi,2);
+    }
+
+    public static String dToB(int n) { // decimal to binary
         if (n == 0) {
             return "0";
         }
@@ -152,40 +160,44 @@ public class Simulator {
         return s;
     }
 
-   public static void main(String[] args) //test function
-   {
+    public static void main(String[] args) //test function
+    {
+        //memory = new memory[100];
+        //indexRegister = new indexRegister[4];
+        //gdr = new gdr[3];
 
-      //memory = new memory[100];
-      //indexRegister = new indexRegister[4];
-      //gdr = new gdr[3];
-      opcode = bToD(instruction.substring(0, 6));
-      gprNumber = bToD(instruction.substring(6, 8));
-      indexNumber = bToD(instruction.substring(8, 10));
-      indirect = bToD(instruction.substring(10, 11));
-      address = bToD(instruction.substring(11, 16));
+        setIPL(IPL);  // initialize the IPL instructions
+        for (int counter = 0; counter < IPL.length; counter++) {
+            instruction = IPL[counter];
+            opcode = bToD(instruction.substring(0, 6));
+            gprNumber = bToD(instruction.substring(6, 8));
+            indexNumber = bToD(instruction.substring(8, 10));
+            indirect = bToD(instruction.substring(10, 11));
+            address = bToD(instruction.substring(11, 16));
+            switch(opcode) {
+                case InstType.LDR:
+                    LDR(gprNumber, instruction);
+                case InstType.STR:
+                    STR(gprNumber, instruction);
+                case InstType.LDA:
+                    LDA(gprNumber, instruction);
+                case InstType.LDX:
+                    LDA(indexNumber, instruction);
+                case InstType.STX:
+                    STX(indexNumber, instruction);
+            }
+        }
 
-      switch(opcode) {
-         case InstType.LDR:
-            LDR(gprNumber, instruction);
-         case InstType.STR:
-            STR(gprNumber, instruction);
-         case InstType.LDA:
-            LDA(gprNumber, instruction);
-         case InstType.LDX:
-            LDA(indexNumber, instruction);
-         case InstType.STX:
-            STX(indexNumber, instruction);
-      }
-   }
+    }
 
 }
 
 class InstType {
-   public static final int LDR = 1; //Load Register From Memory
-   public static final int STR = 2; //Store Register To Memory
-   public static final int LDA = 3; //Load Register with Address
-   public static final int LDX = 41; //Load Index Register from Memory
-   public static final int STX = 42; //Store Index Register to Memory
+    public static final int LDR = 1; //Load Register From Memory
+    public static final int STR = 2; //Store Register To Memory
+    public static final int LDA = 3; //Load Register with Address
+    public static final int LDX = 41; //Load Index Register from Memory
+    public static final int STX = 42; //Store Index Register to Memory
 
    /*public static final int JZ   = 10; //Jump if Zero
    public static final int JNE   = 11; //Jump if not Equal
