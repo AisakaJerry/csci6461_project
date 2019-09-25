@@ -104,12 +104,23 @@ public class gui extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jTextFieldR1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 200, 320, -1));
+
+        jTextFieldMBR.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldMBRActionPerformed(evt);
+            }
+        });
         getContentPane().add(jTextFieldMBR, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 60, 320, -1));
 
         jLabel3.setText("Instructions");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 10, -1, -1));
 
         jButtonR0.setText("Write");
+        jButtonR0.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonR0ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButtonR0, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 160, -1, -1));
 
         jButtonR1.setText("Write");
@@ -129,15 +140,35 @@ public class gui extends javax.swing.JFrame {
         getContentPane().add(jButtonR2, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 240, -1, -1));
 
         jButtonR3.setText("Write");
+        jButtonR3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonR3ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButtonR3, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 280, -1, -1));
 
         jButtonX2.setText("Write");
+        jButtonX2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonX2ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButtonX2, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 390, -1, -1));
 
         jButtonX3.setText("Write");
+        jButtonX3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonX3ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButtonX3, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 430, -1, -1));
 
         jButtonX1.setText("Write");
+        jButtonX1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonX1ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButtonX1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 350, -1, -1));
 
         jLabel4.setText("General Purpose Registers");
@@ -213,16 +244,37 @@ public class gui extends javax.swing.JFrame {
         getContentPane().add(jTextFieldX1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 350, 320, -1));
 
         jButtonMBR.setText("Write");
+        jButtonMBR.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonMBRActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButtonMBR, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 60, -1, -1));
 
         jButtonMAR.setText("Write");
+        jButtonMAR.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonMARActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButtonMAR, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 30, -1, -1));
 
         jLabelR3.setText("R3");
         getContentPane().add(jLabelR3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 280, 220, 30));
+
+        jTextFieldPC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldPCActionPerformed(evt);
+            }
+        });
         getContentPane().add(jTextFieldPC, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 90, 320, -1));
 
         jButtonPC.setText("Write");
+        jButtonPC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonPCActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButtonPC, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 90, -1, -1));
 
         LabelPC.setText("PC");
@@ -339,7 +391,7 @@ public class gui extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextFieldR1ActionPerformed
 
     private void jButtonR1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonR1ActionPerformed
-        // TODO add your handling code here:
+        Simulator.gpr[1] = jTextFieldR1.getText();
     }//GEN-LAST:event_jButtonR1ActionPerformed
 
     private void jButtonInputReadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInputReadActionPerformed
@@ -347,7 +399,7 @@ public class gui extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonInputReadActionPerformed
 
     private void jTextFieldMARActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldMARActionPerformed
-        float
+        
     }//GEN-LAST:event_jTextFieldMARActionPerformed
 
     private void jTextFieldR0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldR0ActionPerformed
@@ -375,7 +427,7 @@ public class gui extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextFieldX1ActionPerformed
 
     private void jButtonR2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonR2ActionPerformed
-        // TODO add your handling code here:
+        Simulator.gpr[2] = jTextFieldR1.getText();
     }//GEN-LAST:event_jButtonR2ActionPerformed
 
     private void jTextFieldInputAdressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldInputAdressActionPerformed
@@ -401,6 +453,49 @@ public class gui extends javax.swing.JFrame {
     private void jTextFieldMSRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldMSRActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldMSRActionPerformed
+
+    private void jButtonMARActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMARActionPerformed
+        //int num1;
+        //num1 = Integer.parseInt(jTextFieldMAR.getText());
+        //jTextFieldMBR.setText(String.valueOf(num1));
+        Simulator.mar = jTextFieldMAR.getText();
+    }//GEN-LAST:event_jButtonMARActionPerformed
+
+    private void jTextFieldMBRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldMBRActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldMBRActionPerformed
+
+    private void jButtonMBRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMBRActionPerformed
+        Simulator.mbr = jTextFieldMBR.getText();
+    }//GEN-LAST:event_jButtonMBRActionPerformed
+
+    private void jTextFieldPCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldPCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldPCActionPerformed
+
+    private void jButtonPCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPCActionPerformed
+        Simulator.pc = jTextFieldPC.getText();
+    }//GEN-LAST:event_jButtonPCActionPerformed
+
+    private void jButtonR0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonR0ActionPerformed
+        Simulator.gpr[0] = jTextFieldR0.getText();
+    }//GEN-LAST:event_jButtonR0ActionPerformed
+
+    private void jButtonR3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonR3ActionPerformed
+        Simulator.gpr[3] = jTextFieldR1.getText();
+    }//GEN-LAST:event_jButtonR3ActionPerformed
+
+    private void jButtonX1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonX1ActionPerformed
+        Simulator.indexRegister[0] = jTextFieldX1.getText();
+    }//GEN-LAST:event_jButtonX1ActionPerformed
+
+    private void jButtonX2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonX2ActionPerformed
+        Simulator.indexRegister[1] = jTextFieldX2.getText();
+    }//GEN-LAST:event_jButtonX2ActionPerformed
+
+    private void jButtonX3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonX3ActionPerformed
+        Simulator.indexRegister[2] = jTextFieldX3.getText();
+    }//GEN-LAST:event_jButtonX3ActionPerformed
 
     /**
      * @param args the command line arguments

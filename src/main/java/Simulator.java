@@ -1,10 +1,11 @@
 import java.io.*;
+import java.lang.*;
 
 public class Simulator {
     public static String[] memory = new String[2048];
     public static String[] indexRegister = new String[3];
     public static String[] gpr = new String[4];
-    public static String[] IPL = new String[10]; // Instructions preloaded
+    public static String[] IPL = new String[5]; // Instructions preloaded
     public static String mar;
     public static String mbr;
     public static String pc;
@@ -15,7 +16,7 @@ public class Simulator {
     public static int gprNumber;
     public static int indirect;
     public static int address;
-    public static String instruction = "0000011100011111";
+    public static String instruction;
 
     public static int FindEA(String ins) //Find effective address
     {
@@ -80,7 +81,7 @@ public class Simulator {
         IPL[1] = "0000101101100110";  // STR 3, 1, 6 with indirect
         IPL[2] = "0000111000011000";  // LDA 2, 24
         IPL[3] = "1010010001011111";  // LDX 1, 31
-        IPL[4] = "1010100001010000";  // STX 1, 16
+        IPL[4] = "1010100001010000";  // STX 1, 16*/
     }
 
     public static void LDR(int gprNum, String ins) //LDR instruction
@@ -135,6 +136,21 @@ public class Simulator {
     public static int bToD(String bi) //binary to decimal
     {
         return Integer.parseInt(bi,2);
+        /*int binary = Integer.parseInt(bi);
+        int decimal = 0;  
+        int n = 0;  
+        while(true){  
+           if(binary == 0){  
+               break;  
+           }  
+           else {  
+               int temp = binary%10;  
+               decimal += temp*Math.pow(2, n);  
+               binary = binary/10;  
+               n++;  
+           }  
+        }  
+        return decimal;*/
     }
 
     public static String dToB(int n) { // decimal to binary
@@ -162,10 +178,6 @@ public class Simulator {
 
     public static void main(String[] args) //test function
     {
-        //memory = new memory[100];
-        //indexRegister = new indexRegister[4];
-        //gdr = new gdr[3];
-
         setIPL(IPL);  // initialize the IPL instructions
         for (int counter = 0; counter < IPL.length; counter++) {
             instruction = IPL[counter];
@@ -174,6 +186,7 @@ public class Simulator {
             indexNumber = bToD(instruction.substring(8, 10));
             indirect = bToD(instruction.substring(10, 11));
             address = bToD(instruction.substring(11, 16));
+            
             switch(opcode) {
                 case InstType.LDR:
                     LDR(gprNumber, instruction);
