@@ -126,6 +126,19 @@ public class gui extends javax.swing.JFrame {
                 jButtonR2ActionPerformed(evt);
             }
         });
+
+        jButtonIPL.addActionListener(new java.awt.event.ActionListener() {
+           public void actionPerformed(java.awt.event.ActionEvent evt) {
+               jButtonIPLPerformed(evt);
+           }
+        });
+
+        jButtonSingleRun.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSingleRunPerformed(evt);
+            }
+        });
+
         getContentPane().add(jButtonR2, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 240, -1, -1));
 
         jButtonR3.setText("Write");
@@ -347,7 +360,6 @@ public class gui extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonInputReadActionPerformed
 
     private void jTextFieldMARActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldMARActionPerformed
-        float
     }//GEN-LAST:event_jTextFieldMARActionPerformed
 
     private void jTextFieldR0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldR0ActionPerformed
@@ -377,6 +389,22 @@ public class gui extends javax.swing.JFrame {
     private void jButtonR2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonR2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonR2ActionPerformed
+
+    private void jButtonIPLPerformed(java.awt.event.ActionEvent evt) {
+        Simulator.setIPL(Simulator.IPL);
+        /*
+        for (int i = 0; i<Simulator.IPL.length; i++) {
+            Simulator.pushInstList(Simulator.IPL[i]);
+        }
+         */
+    }
+
+    private void jButtonSingleRunPerformed(java.awt.event.ActionEvent evt) {
+        if (Simulator.execPos < 5) {
+            Simulator.execInst(Simulator.instList[Simulator.execPos]);
+            Simulator.execPos++;
+        }
+    }
 
     private void jTextFieldInputAdressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldInputAdressActionPerformed
         // TODO add your handling code here:

@@ -4,18 +4,23 @@ public class Simulator {
     public static String[] memory = new String[2048];
     public static String[] indexRegister = new String[3];
     public static String[] gpr = new String[4];
-    public static String[] IPL = new String[10]; // Instructions preloaded
+    public static String[] IPL = new String[5]; // Instructions preloaded
     public static String mar;
     public static String mbr;
+    public static String[] mfr = new String[4];
     public static String pc;
     public static String cc;
+
+    public static String[] instList = new String[30];  // instruction list waiting for execute
+	private static int instIndicator = 0;   //a pointer to indicate current location of instructionList
+	public static int execPos = 0;          // a pointer to indicate current execution position of instructionList
 
     public static int opcode;
     public static int indexNumber;
     public static int gprNumber;
     public static int indirect;
     public static int address;
-    public static String instruction = "0000011100011111";
+    public static String IR;
 
     public static int FindEA(String ins) //Find effective address
     {
@@ -75,12 +80,40 @@ public class Simulator {
         return indirectN;
     }
 
-    private static void setIPL(String[] IPL) {
+    public static void setIPL(String[] IPL) {
+    	execPos = 0;
         IPL[0] = "0000011100011111";  // LDR 3, 0, 31
         IPL[1] = "0000101101100110";  // STR 3, 1, 6 with indirect
         IPL[2] = "0000111000011000";  // LDA 2, 24
         IPL[3] = "1010010001011111";  // LDX 1, 31
         IPL[4] = "1010100001010000";  // STX 1, 16
+    }
+
+    public static void pushInstList(String inst) {
+    	if (instIndicator <= 30) {
+		    instList[instIndicator] = inst;
+		    instIndicator++;
+	    }
+    }
+
+    public static void execInst(String inst) {
+	    opcode = bToD(inst.substring(0, 6));
+	    gprNumber = bToD(inst.substring(6, 8));
+	    indexNumber = bToD(inst.substring(8, 10));
+	    indirect = bToD(inst.substring(10, 11));
+	    address = bToD(inst.substring(11, 16));
+	    switch(opcode) {
+		    case InstType.LDR:
+			    LDR(gprNumber, inst);
+		    case InstType.STR:
+			    STR(gprNumber, inst);
+		    case InstType.LDA:
+			    LDA(gprNumber, inst);
+		    case InstType.LDX:
+			    LDA(indexNumber, inst);
+		    case InstType.STX:
+			    STX(indexNumber, inst);
+	    }
     }
 
     public static void LDR(int gprNum, String ins) //LDR instruction
@@ -167,27 +200,6 @@ public class Simulator {
         //gdr = new gdr[3];
 
         setIPL(IPL);  // initialize the IPL instructions
-        for (int counter = 0; counter < IPL.length; counter++) {
-            instruction = IPL[counter];
-            opcode = bToD(instruction.substring(0, 6));
-            gprNumber = bToD(instruction.substring(6, 8));
-            indexNumber = bToD(instruction.substring(8, 10));
-            indirect = bToD(instruction.substring(10, 11));
-            address = bToD(instruction.substring(11, 16));
-            switch(opcode) {
-                case InstType.LDR:
-                    LDR(gprNumber, instruction);
-                case InstType.STR:
-                    STR(gprNumber, instruction);
-                case InstType.LDA:
-                    LDA(gprNumber, instruction);
-                case InstType.LDX:
-                    LDA(indexNumber, instruction);
-                case InstType.STX:
-                    STX(indexNumber, instruction);
-            }
-        }
-
     }
 
 }
