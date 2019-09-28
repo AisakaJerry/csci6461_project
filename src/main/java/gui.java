@@ -501,6 +501,7 @@ public class gui extends javax.swing.JFrame {
 	private void jButtonSingleRunPerformed(java.awt.event.ActionEvent evt) {  // run the instruction in the instruction list which the current indicator pointed
 		if (Simulator.execPos < 100) {
 			if (!Simulator.instList[Simulator.execPos].equals("")) {
+				jTextFieldIR.setText(Simulator.instList[Simulator.execPos]);
 				Simulator.execInst(Simulator.instList[Simulator.execPos]);
 				Simulator.execPos++;
 				System.out.println(Simulator.execPos);
