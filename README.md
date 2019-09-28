@@ -2,6 +2,12 @@
 
 > Author: Zeyuan Feng; Pranay Patodi; Zhen Wang (Sorted by last name)
 
+## Environment and Prerequisite
+
+IDE:      JetBrains Intellij IDEA
+JDK:      JDK-13
+Plug-in:  JFormDesigner
+
 ## Part I Deliverable (See syllabus: (Part I – 5 points)
 
 Your simulator, packaged as a JAR file.
