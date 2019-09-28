@@ -5,14 +5,14 @@ public class Simulator {
     public static String[] indexRegister = new String[3];
     public static String[] gpr = new String[4];
     public static String[] IPL = new String[5]; // Instructions preloaded
-    public static String mar;
-    public static String mbr;
+    public static String mar = "0000000000000000";
+    public static String mbr = "0000000000000000";
     public static String[] mfr = new String[4];
-    public static String pc;
-    public static String cc;
+    public static String pc = "";
+    public static String cc = "";
 
-    public static String[] instList = new String[30];  // instruction list waiting for execute
-	private static int instIndicator = 0;   //a pointer to indicate current location of instructionList
+    public static String[] instList = new String[100];  // instruction list waiting for execute
+	public static int instIndicator = 0;   //a pointer to indicate current location of instructionList
 	public static int execPos = 0;          // a pointer to indicate current execution position of instructionList
 
     public static int opcode;
@@ -35,7 +35,7 @@ public class Simulator {
                 address = addr;
             }
             else {
-                address = bToD(indexRegister[indexNum]) + addr;
+                address = bToD(indexRegister[indexNum - 1]) + addr;
             }
         }
         if(indirect == 1)
@@ -44,7 +44,7 @@ public class Simulator {
                 address = Integer.parseInt(memory[addr]);
             }
             else {
-                address = bToD(memory[bToD(indexRegister[indexNum]) + addr]);
+                address = bToD(memory[bToD(indexRegister[indexNum - 1]) + addr]);
             }
         }
         return address;
@@ -80,17 +80,35 @@ public class Simulator {
         return indirectN;
     }
 
-    public static void setIPL(String[] IPL) {
-    	execPos = 0;
+    public static void setIPL() {
+    	execPos = 0;    // set the execute position to head
         IPL[0] = "0000011100011111";  // LDR 3, 0, 31
         IPL[1] = "0000101101100110";  // STR 3, 1, 6 with indirect
         IPL[2] = "0000111000011000";  // LDA 2, 24
         IPL[3] = "1010010001011110";  // LDX 1, 30
         IPL[4] = "1010100001010000";  // STX 1, 16
+
+	    for (int i = 0; i < 100; i++) {  // empty the instList
+	    	instList[i] = "";
+	    }
+	    for (int i = 0; i < 5; i++) {  // push the IPL into the instList
+	    	instList[i] = IPL[i];
+	    }
+	    instIndicator = 5;  // set the instIndicator to tail
+	    initRegs();
+	    initMem();
+
+    }
+
+    public static void initRegs() {
+    	mar = "0000000000000000";
+    	mbr = "0000000000000000";
+    	gpr[0] = gpr[1] = gpr[2] = gpr[3] = "0000000000000000";
+    	indexRegister[0] = indexRegister[1] = indexRegister[2] = "0000000000000000";
     }
 
     public static void pushInstList(String inst) {
-    	if (instIndicator <= 30) {
+    	if (instIndicator <= 100) {
 		    instList[instIndicator] = inst;
 		    instIndicator++;
 	    }
@@ -106,21 +124,26 @@ public class Simulator {
 	    switch(opcode) {
 		    case InstType.LDR:
 			    LDR(gprNumber, inst);
+			    break;
 		    case InstType.STR:
 			    STR(gprNumber, inst);
+			    break;
 		    case InstType.LDA:
 			    LDA(gprNumber, inst);
+			    break;
 		    case InstType.LDX:
 			    LDA(indexNumber, inst);
+			    break;
 		    case InstType.STX:
 			    STX(indexNumber, inst);
+			    break;
 	    }
     }
 
     public static void initMem() {
         memory[30] = "0000000000001110";
         memory[31] = "1010101010101010";
-        indexRegister[1] = "0000000000001010";
+        indexRegister[0] = "0000000000001010";
         memory[16] = "0000000000001111";
     }
 
@@ -129,7 +152,7 @@ public class Simulator {
         int address;
         String memoryVal;
         address = FindEA(ins);
-        mar = Integer.toString(address);
+        mar = ext216(dToB(address));
         memoryVal = memory[address];
         if (indirect == 0){
             gpr[gprNum] = memoryVal;
@@ -160,8 +183,8 @@ public class Simulator {
     {
         int address;
         address = FindEA(ins);
-        mar = Integer.toString(address);
-        indexRegister[indexNum] = memory[address];
+        mar = ext216(dToB(address));
+        indexRegister[indexNum - 1] = memory[address];
         mbr = memory[address];
     }
 
@@ -169,7 +192,7 @@ public class Simulator {
     {
         int address;
         address = FindEA(ins);
-        memory[address] = indexRegister[indexNum];
+        memory[address] = indexRegister[indexNum - 1];
         mbr = memory[address];
     }
 
@@ -206,8 +229,6 @@ public class Simulator {
         //memory = new memory[100];
         //indexRegister = new indexRegister[4];
         //gdr = new gdr[3];
-
-        setIPL(IPL);  // initialize the IPL instructions
     }
 
 }
