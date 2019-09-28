@@ -20,11 +20,13 @@ public class gui extends javax.swing.JFrame {
 		// TODO add your code here
 	}
 
+	/*Button for load memory value in inputed memory address*/
 	private void buttonLoadActionPerformed(ActionEvent e) {
 		int memAddress = Integer.parseInt(memoryAddressTextField.getText());
 		memoryValueTextField.setText(Simulator.memory[memAddress]);
 	}
 
+	/*button for store inputed memory value in inputed memory address*/
 	private void buttonStoreActionPerformed(ActionEvent e) {
 		String memValue = memoryValueTextField.getText();
 		int memAddress = Integer.parseInt(memoryAddressTextField.getText());
@@ -492,12 +494,15 @@ public class gui extends javax.swing.JFrame {
 		// TODO add your handling code here:
 	}//GEN-LAST:event_jTextFieldX1ActionPerformed
 
-	private void jButtonIPLPerformed(java.awt.event.ActionEvent evt) {
+	/*button for run initialize IPL program. When click second times,
+	the simulator will reset all values in registers and memory*/
+	private void jButtonIPLPerformed(java.awt.event.ActionEvent evt) { //Initialize the memory, registers and test program.
 		Simulator.setIPL();
 		showCurrentContent();
 		jTextPaneInstructions.setText("");
 	}
 
+	/*button for run instruction one by one*/
 	private void jButtonSingleRunPerformed(java.awt.event.ActionEvent evt) {  // run the instruction in the instruction list which the current indicator pointed
 		if (Simulator.execPos < 100) {
 			if (!Simulator.instList[Simulator.execPos].equals("")) {
@@ -535,6 +540,7 @@ public class gui extends javax.swing.JFrame {
 		// TODO add your handling code here:
 	}//GEN-LAST:event_jTextFieldMSRActionPerformed
 
+	/*button for put the manually inputed instruction into the instruction queue*/
 	private void jButtonInputWriteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInputWriteActionPerformed
 		String ins;
 		ins = jTextFieldInputValue.getText();
@@ -551,7 +557,7 @@ public class gui extends javax.swing.JFrame {
 			Simulator.pc = "";
 		}
 	}
-
+	/*show all instructions have executed on the right text area*/
 	private void showInstructions(){
 		String output = "";
 		for (int i = 0; i < Simulator.execPos; i++) {
@@ -560,6 +566,7 @@ public class gui extends javax.swing.JFrame {
 		}
 	}
 
+	/*show current value of all registers on the left side text fields*/
 	private void showCurrentContent(){
 		jTextFieldMAR.setText(Simulator.mar);
 		jTextFieldMBR.setText(Simulator.mbr);

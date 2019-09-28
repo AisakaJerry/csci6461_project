@@ -1,20 +1,22 @@
 import java.io.*;
 
 public class Simulator {
-    public static String[] memory = new String[2048];
-    public static String[] indexRegister = new String[3];
-    public static String[] gpr = new String[4];
+    /*Data structures for memory and registers*/
+    public static String[] memory = new String[2048]; //Memory of 2048 words
+    public static String[] indexRegister = new String[3]; //3 Index Registers
+    public static String[] gpr = new String[4]; //4 General Purpose Registers
     public static String[] IPL = new String[5]; // Instructions preloaded
     public static String mar = "0000000000000000";
     public static String mbr = "0000000000000000";
-    public static String[] mfr = new String[4];
-    public static String pc = "";
-    public static String cc = "";
+    public static String[] mfr = new String[4]; //Machine Fault Register
+    public static String pc = ""; //Program Counter
+    public static String cc = ""; //Condition Code
 
     public static String[] instList = new String[100];  // instruction list waiting for execute
 	public static int instIndicator = 0;   //a pointer to indicate current location of instructionList
 	public static int execPos = 0;          // a pointer to indicate current execution position of instructionList
 
+    /*basic instruction format*/
     public static int opcode;
     public static int indexNumber;
     public static int gprNumber;
@@ -22,7 +24,8 @@ public class Simulator {
     public static int address;
     public static String IR;
 
-    public static int FindEA(String ins) //Find effective address
+    /*Find effective address*/
+    public static int FindEA(String ins)
     {
         int addr, indexNum, indirect, address = 0;
         addr = findAddr(ins); //find address from inputed instruction
@@ -50,36 +53,42 @@ public class Simulator {
         return address;
     }
 
-    public static int findAddr(String ins)//find address from inputed instruction
+    /*find address from inputed instruction*/
+    public static int findAddr(String ins)
     {
         int addr = bToD(ins.substring(11,16));
         return addr;
     }
 
-    public int findOpcode(String ins)// find opcode from inputed instruction
+    /*find opcode from inputed instruction*/
+    public int findOpcode(String ins)
     {
         int op = bToD(ins.substring(0,6));
         return op;
     }
 
-    public int findGprNumber(String ins)// find GPR number from inputed instruction
+    /*find GPR number from inputed instruction*/
+    public int findGprNumber(String ins)
     {
         int gprN = bToD(ins.substring(8,10));
         return gprN;
     }
 
-    public static int findIndexNumber(String ins)// find index register number from inputed instruction
+    /*find index register number from inputed instruction*/
+    public static int findIndexNumber(String ins)
     {
         int indexN = bToD(ins.substring(8,10));
         return indexN;
     }
 
-    public static int findIndirect(String ins)// find indirect number from inputed instruction
+    /*find indirect number from inputed instruction*/
+    public static int findIndirect(String ins)
     {
         int indirectN = bToD(ins.substring(10,11));
         return indirectN;
     }
 
+    /*Initialize IPL Instruction set*/
     public static void setIPL() {
     	execPos = 0;    // set the execute position to head
         IPL[0] = "0000011100011111";  // LDR 3, 0, 31
@@ -100,6 +109,7 @@ public class Simulator {
 
     }
 
+    /*initialize the registers*/
     public static void initRegs() {
     	mar = "0000000000000000";
     	mbr = "0000000000000000";
@@ -107,6 +117,7 @@ public class Simulator {
     	indexRegister[0] = indexRegister[1] = indexRegister[2] = "0000000000000000";
     }
 
+    /*push the inputed instructions to instList*/
     public static void pushInstList(String inst) {
     	if (instIndicator <= 100) {
 		    instList[instIndicator] = inst;
@@ -114,6 +125,7 @@ public class Simulator {
 	    }
     }
 
+    /*execute the instructions*/
     public static void execInst(String inst) {
 	    opcode = bToD(inst.substring(0, 6));
 	    gprNumber = bToD(inst.substring(6, 8));
@@ -140,6 +152,7 @@ public class Simulator {
 	    }
     }
 
+    /*initialize value in some memory address for IPL program*/
     public static void initMem() {
         memory[30] = "0000000000001110";
         memory[31] = "1010101010101010";
@@ -147,7 +160,8 @@ public class Simulator {
         memory[16] = "0000000000001111";
     }
 
-    public static void LDR(int gprNum, String ins) //LDR instruction
+    /*LDR instruction: Load Register From Memory*/
+    public static void LDR(int gprNum, String ins)
     {
         int address;
         String memoryVal;
@@ -164,7 +178,8 @@ public class Simulator {
         }
     }
 
-    public static void STR(int gprNum, String ins) // STR instruction
+    /*STR instruction: Store Register To Memory*/
+    public static void STR(int gprNum, String ins)
     {
         int address;
         address = FindEA(ins);
@@ -172,14 +187,16 @@ public class Simulator {
         mbr = memory[address];
     }
 
-    public static void LDA(int gprNum, String ins) //LDA instruction
+    /*LDA instruction: Load Register with Address*/
+    public static void LDA(int gprNum, String ins)
     {
         int address;
         address = FindEA(ins);
         gpr[gprNum] = ext216(dToB(address));
     }
 
-    public static void LDX(int indexNum, String ins) //LDX instruction
+    /*LDX instruction: Load Index Register from Memory*/
+    public static void LDX(int indexNum, String ins)
     {
         int address;
         address = FindEA(ins);
@@ -188,7 +205,8 @@ public class Simulator {
         mbr = memory[address];
     }
 
-    public static void STX(int indexNum, String ins)// STX instruction
+    /*STX instruction: Store Index Register to Memory*/
+    public static void STX(int indexNum, String ins)
     {
         int address;
         address = FindEA(ins);
@@ -196,12 +214,14 @@ public class Simulator {
         mbr = memory[address];
     }
 
-    public static int bToD(String bi) //binary to decimal
+    /*binary to decimal*/
+    public static int bToD(String bi)
     {
         return Integer.parseInt(bi,2);
     }
 
-    public static String dToB(int n) { // decimal to binary
+    /*decimal to binary*/
+    public static String dToB(int n) {
         if (n == 0) {
             return "0";
         }
@@ -214,7 +234,8 @@ public class Simulator {
         return binary;
     }
 
-    public static String ext216(String s) {  // extend strings to 16 bits with 0
+    /*extend strings to 16 bits with 0*/
+    public static String ext216(String s) {
         int len = s.length();
         if (len < 16) {
             for (int i = 0; i < 16 - len; i++) {
@@ -224,15 +245,14 @@ public class Simulator {
         return s;
     }
 
-    public static void main(String[] args) //test function
+    public static void main(String[] args)
     {
-        //memory = new memory[100];
-        //indexRegister = new indexRegister[4];
-        //gdr = new gdr[3];
+
     }
 
 }
 
+/*class for different instruction types*/
 class InstType {
     public static final int LDR = 1; //Load Register From Memory
     public static final int STR = 2; //Store Register To Memory
