@@ -9,8 +9,9 @@ public class Simulator {
     public static String mar = "0000000000000000";
     public static String mbr = "0000000000000000";
     public static String[] mfr = new String[4]; //Machine Fault Register
-    public static String pc = ""; //Program Counter
-    public static String cc = ""; //Condition Code
+    public static String pc; //Program Counter
+    public static String cc; //Condition Code
+    public static String immed; // immediate value
 
     public static String[] instList = new String[100];  // instruction list waiting for execute
 	public static int instIndicator = 0;   //a pointer to indicate current location of instructionList
@@ -214,6 +215,146 @@ public class Simulator {
         mbr = memory[address];
     }
 
+    /*JZ instruction: Jump If Zero*/
+    public static void JZ(int gprNum, String ins)
+    {
+        int address;
+        int temp = 0;
+        address = FindEA(ins);
+        if(memory[Integer.parseInt(gpr[gprNum])] == null)
+            pc = dToB(address);
+        else
+            temp = bToD(pc);
+            temp++;
+            pc = dToB(temp);
+    }
+
+    /*JNE instruction: Jump If Not Equal*/
+    public static void JNE(int gprNum, String ins)
+    {
+        int address;
+        int temp = 0;
+        address = FindEA(ins);
+        if(memory[Integer.parseInt(gpr[gprNum])] != null)
+            pc = dToB(address);
+        else
+            temp = bToD(pc);
+            temp++;
+            pc = dToB(temp);
+    }
+
+    /*JCC instruction: Jump If Condition Code*/
+    public static void JCC(int gprNum, String ins)
+    {
+        int address;
+        int temp = 0;
+        address = FindEA(ins);
+        if(gprNum == 1)
+            pc = dToB(address);
+        else
+            temp = bToD(pc);
+            temp++;
+            pc = dToB(temp);
+    }
+
+    /*JMA instruction: Unconditional Jump To Address(r is ignored)*/
+    public static void JMA(String ins)
+    {
+        int address;
+        address = FindEA(ins);
+        pc = dToB(address);
+    }
+
+    /*JSR instruction: Jump and Save Return Address*/
+    public static void JSR(String ins)
+    {
+        int temp;
+        temp = bToD(pc);
+        temp++;
+        pc = dToB(temp);
+        gpr[3] = pc;
+        pc = dToB(address);
+    }
+
+    /*RFS instruction: Return From Subroutine w/ return code as Immed
+     portion (optional) stored in the instruction’s address field*/
+    public static void RFS(String ins)
+    {
+        gpr[0] = immed;
+        pc = memory[Integer.parseInt(gpr[3])];
+    }
+
+    /*SOB instruction: Subtract One and Branch*/
+    public static  void SOB(int gprNum, String ins)
+    {
+        int address;
+        int temp = 0;
+        address = FindEA(ins);
+        gpr[gprNum] = Integer.toString(Integer.parseInt(memory[Integer.parseInt(gpr[gprNum])]) - 1);
+        if(Integer.parseInt((memory[Integer.parseInt(gpr[gprNum])])) > 0)
+            pc = Integer.toString(address);
+        else
+            temp = bToD(pc);
+            temp++;
+            pc = dToB(temp);
+    }
+
+    /*JGE instruction: Jump Greater Than or Equal To*/
+    public static void JGE(int gprNum, String ins)
+    {
+        int address;
+        int temp = 0;
+        address = FindEA(ins);
+        if(Integer.parseInt((memory[Integer.parseInt(gpr[gprNum])])) >= 0)
+            pc = Integer.toString(address);
+        else
+            temp = bToD(pc);
+            temp++;
+            pc = dToB(temp);
+    }
+
+    /*AMR instruction: Add Memory To Register*/
+    public static void AMR(int gprNum, String ins)
+    {
+        int address;
+        address = FindEA(ins);
+        gpr[gprNum] = Integer.toString(Integer.parseInt(memory[Integer.parseInt(gpr[gprNum])]) + Integer.parseInt(memory[address]));
+    }
+
+    /*SMR instruction: Subtract Memory From Register*/
+    public static void SMR(int gprNum, String ins)
+    {
+        int address;
+        address = FindEA(ins);
+        gpr[gprNum] = Integer.toString(Integer.parseInt(memory[Integer.parseInt(gpr[gprNum])]) - Integer.parseInt(memory[address]));
+    }
+
+    /*AIR instruction: Add Immediate to Register*/
+    public static void AIR(int gprNum, String ins)
+    {
+        int address;
+        address = FindEA(ins);
+        if(immed == null)
+            ;
+        else if(Integer.parseInt(memory[Integer.parseInt(gpr[gprNum])]) == 0)
+            gpr[gprNum] = immed;
+        else
+            gpr[gprNum] = Integer.toString(Integer.parseInt(memory[Integer.parseInt(gpr[gprNum])]) + Integer.parseInt(immed));
+    }
+
+    /*SIR instruction: Subtract  Immediate  from Register*/
+    public static void SIR(int gprNum, String ins)
+    {
+        int address;
+        address = FindEA(ins);
+        if(immed == null)
+            ;
+        else if(Integer.parseInt(memory[Integer.parseInt(gpr[gprNum])]) == 0)
+            gpr[gprNum] = immed;
+        else
+            gpr[gprNum] = Integer.toString(Integer.parseInt(memory[Integer.parseInt(gpr[gprNum])]) - Integer.parseInt(immed));
+    }
+
     /*binary to decimal*/
     public static int bToD(String bi)
     {
@@ -244,6 +385,7 @@ public class Simulator {
         }
         return s;
     }
+
 
     public static void main(String[] args)
     {
