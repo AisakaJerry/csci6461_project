@@ -10,7 +10,7 @@ public class Simulator {
     public static String mbr = "0000000000000000";
     public static String[] mfr = new String[4]; //Machine Fault Register
     public static String pc; //Program Counter
-    public static String cc; //Condition Code
+    public static String[] cc = new String[4]; //Condition Code
     public static String immed; // immediate value
 
     public static String[] instList = new String[100];  // instruction list waiting for execute
@@ -24,6 +24,9 @@ public class Simulator {
     public static int indirect;
     public static int address;
     public static String IR;
+    public static int AOrL;
+    public static int LOrR;
+    public static int count;
 
     /*Find effective address*/
     public static int FindEA(String ins)
@@ -222,11 +225,11 @@ public class Simulator {
         int temp = 0;
         address = FindEA(ins);
         if(memory[Integer.parseInt(gpr[gprNum])] == null)
-            pc = dToB(address);
+            pc = ext216(dToB(address));
         else
             temp = bToD(pc);
             temp++;
-            pc = dToB(temp);
+            pc = ext216(dToB(temp));
     }
 
     /*JNE instruction: Jump If Not Equal*/
@@ -236,11 +239,11 @@ public class Simulator {
         int temp = 0;
         address = FindEA(ins);
         if(memory[Integer.parseInt(gpr[gprNum])] != null)
-            pc = dToB(address);
+            pc = ext216(dToB(address));
         else
             temp = bToD(pc);
             temp++;
-            pc = dToB(temp);
+            pc = ext216(dToB(temp));
     }
 
     /*JCC instruction: Jump If Condition Code*/
@@ -250,11 +253,11 @@ public class Simulator {
         int temp = 0;
         address = FindEA(ins);
         if(gprNum == 1)
-            pc = dToB(address);
+            pc = ext216(dToB(address));
         else
             temp = bToD(pc);
             temp++;
-            pc = dToB(temp);
+            pc = ext216(dToB(temp));
     }
 
     /*JMA instruction: Unconditional Jump To Address(r is ignored)*/
@@ -262,18 +265,19 @@ public class Simulator {
     {
         int address;
         address = FindEA(ins);
-        pc = dToB(address);
+        pc = ext216(dToB(address));
     }
 
     /*JSR instruction: Jump and Save Return Address*/
     public static void JSR(String ins)
     {
-        int temp;
+        int address, temp;
+        address = FindEA(ins);
         temp = bToD(pc);
         temp++;
-        pc = dToB(temp);
+        pc = ext216(dToB(temp));
         gpr[3] = pc;
-        pc = dToB(address);
+        pc = ext216(dToB(address));
     }
 
     /*RFS instruction: Return From Subroutine w/ return code as Immed
@@ -281,7 +285,7 @@ public class Simulator {
     public static void RFS(String ins)
     {
         gpr[0] = immed;
-        pc = memory[Integer.parseInt(gpr[3])];
+        pc = gpr[3];
     }
 
     /*SOB instruction: Subtract One and Branch*/
@@ -290,13 +294,13 @@ public class Simulator {
         int address;
         int temp = 0;
         address = FindEA(ins);
-        gpr[gprNum] = Integer.toString(Integer.parseInt(memory[Integer.parseInt(gpr[gprNum])]) - 1);
-        if(Integer.parseInt((memory[Integer.parseInt(gpr[gprNum])])) > 0)
-            pc = Integer.toString(address);
+        gpr[gprNum] = dToB(bToD(gpr[gprNum]) - 1);
+        if(bToD(gpr[gprNum]) > 0)
+            pc = ext216(dToB(address));
         else
             temp = bToD(pc);
             temp++;
-            pc = dToB(temp);
+            pc = ext216(dToB(temp));
     }
 
     /*JGE instruction: Jump Greater Than or Equal To*/
@@ -305,12 +309,12 @@ public class Simulator {
         int address;
         int temp = 0;
         address = FindEA(ins);
-        if(Integer.parseInt((memory[Integer.parseInt(gpr[gprNum])])) >= 0)
-            pc = Integer.toString(address);
+        if(bToD(gpr[gprNum]) >= 0)
+            pc = ext216(dToB(address));
         else
             temp = bToD(pc);
             temp++;
-            pc = dToB(temp);
+            pc = ext216(dToB(temp));
     }
 
     /*AMR instruction: Add Memory To Register*/
@@ -318,7 +322,7 @@ public class Simulator {
     {
         int address;
         address = FindEA(ins);
-        gpr[gprNum] = Integer.toString(Integer.parseInt(memory[Integer.parseInt(gpr[gprNum])]) + Integer.parseInt(memory[address]));
+        gpr[gprNum] = ext216(dToB(bToD(gpr[gprNum]) + bToD(memory[address])));
     }
 
     /*SMR instruction: Subtract Memory From Register*/
@@ -326,7 +330,7 @@ public class Simulator {
     {
         int address;
         address = FindEA(ins);
-        gpr[gprNum] = Integer.toString(Integer.parseInt(memory[Integer.parseInt(gpr[gprNum])]) - Integer.parseInt(memory[address]));
+        gpr[gprNum] = ext216(dToB(bToD(gpr[gprNum]) - bToD(memory[address])));
     }
 
     /*AIR instruction: Add Immediate to Register*/
@@ -336,10 +340,10 @@ public class Simulator {
         address = FindEA(ins);
         if(immed == null)
             ;
-        else if(Integer.parseInt(memory[Integer.parseInt(gpr[gprNum])]) == 0)
+        else if(bToD(gpr[gprNum]) == 0)
             gpr[gprNum] = immed;
         else
-            gpr[gprNum] = Integer.toString(Integer.parseInt(memory[Integer.parseInt(gpr[gprNum])]) + Integer.parseInt(immed));
+            gpr[gprNum] = ext216(dToB(bToD(gpr[gprNum]) + bToD(immed)));
     }
 
     /*SIR instruction: Subtract  Immediate  from Register*/
@@ -349,11 +353,117 @@ public class Simulator {
         address = FindEA(ins);
         if(immed == null)
             ;
-        else if(Integer.parseInt(memory[Integer.parseInt(gpr[gprNum])]) == 0)
+        else if(bToD(gpr[gprNum]) == 0)
             gpr[gprNum] = immed;
         else
-            gpr[gprNum] = Integer.toString(Integer.parseInt(memory[Integer.parseInt(gpr[gprNum])]) - Integer.parseInt(immed));
+            gpr[gprNum] = ext216(dToB(bToD(gpr[gprNum]) - bToD(immed)));
     }
+
+    /*MLT instruction: Multiply Register by Register*/
+    public static void MLT(int rx, int ry, String ins)
+    { }
+
+    /*DVD instruction: Divide Register by Register*/
+    public static void DVD(int rx, int ry, String ins)
+    { }
+
+    /*TRR instruction: Test the Equality of Register and Register*/
+    public static void TRR(int rxNum, int ryNum, String ins)
+    {
+        if(bToD(gpr[rxNum]) == bToD(gpr[ryNum]))
+            cc[3] = "0001";
+        else
+            cc[3] = "0000";
+    }
+
+    /*AND instruction: Logical And of Register and Register*/
+    public static void AND(int rxNum, int ryNum, String ins)
+    {
+        gpr[rxNum] = ext216(dToB(bToD(gpr[rxNum]) & bToD(gpr[ryNum])));
+    }
+
+    /*ORR instruction: Logical Or of Register and Register*/
+    public static void ORR(int rxNum, int ryNum, String ins)
+    {
+        gpr[rxNum] = ext216(dToB(bToD(gpr[rxNum]) | bToD(gpr[ryNum])));
+    }
+
+    /*NOT instruction: Logical Not of Register To Register*/
+    public static void NOT(int rxNum, int ryNum, String ins)
+    {
+        gpr[rxNum] = ext216(dToB(~(bToD(gpr[rxNum]))));
+    }
+
+
+    /*SRC instruction: Shift Register by Count*/
+    public static void SRC(int gprNum, String ins)
+    {
+
+        String temp;
+        temp = gpr[gprNum];
+        int x = bToD(temp);
+        if(count == 0)
+            ;
+        else
+        {
+            if (AOrL == 0) //arithmetical shift
+            {
+                if(LOrR == 0) //shift right
+                {
+                    x = x >> count;
+                    gpr[gprNum] = ext216(dToB(x));
+                }
+                if(LOrR == 1)//shift left
+                {
+                    x = x << count;
+                    gpr[gprNum] = ext216(dToB(x));
+                }
+            }
+            if (AOrL == 1) //logic shift
+            {
+                if(LOrR == 0)//shift right
+                {
+                    x = x >>> count;
+                    gpr[gprNum] = ext216(dToB(x));
+                }
+                if(LOrR == 1)//shift left
+                {
+                    x = x << count;
+                    gpr[gprNum] = ext216(dToB(x));
+                }
+
+            }
+        }
+    }
+
+    /*Rotate Register by Count*/
+    public static void RRC(int gprNum, String ins)
+    {
+        String temp;
+        temp = gpr[gprNum];
+        int x = bToD(temp);
+        if(count == 0)
+            ;
+        else
+        {
+            if(AOrL == 1)
+            {
+                if(LOrR == 0)//rotate right
+                {
+                    x = (x >> count | x >> (16 - count));
+                    gpr[gprNum] = ext216(dToB(x));
+                }
+                if(LOrR == 1)//rotate left
+                {
+                    x = (x << count | x << (16 - count));
+                    gpr[gprNum] = ext216(dToB(x));
+                }
+            }
+        }
+    }
+
+
+
 
     /*binary to decimal*/
     public static int bToD(String bi)
@@ -402,19 +512,28 @@ class InstType {
     public static final int LDX = 41; //Load Index Register from Memory
     public static final int STX = 42; //Store Index Register to Memory
 
-   /*public static final int JZ   = 10; //Jump if Zero
-   public static final int JNE   = 11; //Jump if not Equal
-   public static final int JCC   = 12; // Jump if condition code cc replace r for this instruction
-   public static final int JMA   = 13; // Unconditional Jump To Address
-   public static final int JSR   = 14; //Jump and Save Return Address
-   public static final int RFS   = 15; //Return From Subroutine w/ return code as Immed portion 
-                                       //(optional) stored in the instruction’s address field. 
-   public static final int SOB  = 16; //Subtract One and Branch
-   public static final int JGE   = 17; //Jump Greater Than or Equal To
-   public static final int AMR = 4; //Add Memory To Register
-   public static final int SMR = 5; //Subtract Memory From Register
-   public static final int AIR = 6; //Add  Immediate to Register
-   public static final int SIR = 7; //Subtract  Immediate  from Register
-   public static final int MLT = 20; //Multiply Register by Register
-   public static final int DVD = 21; //Divide Register by Register*/
+    public static final int JZ   = 10; //Jump if Zero
+    public static final int JNE   = 11; //Jump if not Equal
+    public static final int JCC   = 12; // Jump if condition code cc replace r for this instruction
+    public static final int JMA   = 13; // Unconditional Jump To Address
+    public static final int JSR   = 14; //Jump and Save Return Address
+    public static final int RFS   = 15; //Return From Subroutine w/ return code as Immed portion
+                                       //(optional) stored in the instruction’s address field.
+    public static final int SOB  = 16; //Subtract One and Branch
+    public static final int JGE   = 17; //Jump Greater Than or Equal To
+    public static final int AMR = 4; //Add Memory To Register
+    public static final int SMR = 5; //Subtract Memory From Register
+    public static final int AIR = 6; //Add  Immediate to Register
+    public static final int SIR = 7; //Subtract  Immediate  from Register
+    public static final int MLT = 20; //Multiply Register by Register
+    public static final int DVD = 21; //Divide Register by Register
+    public static final int TRR = 22; //Test the Equality of Register and Register
+    public static final int AND = 23; //Logical And of Register and Register
+    public static final int ORR = 24; //Logical Or of Register and Register
+    public static final int NOT = 25; //Logical Not of Register To Register
+    public static final int SRC = 31; //Shift Register by Count
+    public static final int RRC = 32; //Rotate Register by Count
+    public static final int IN = 61; //Input Character To Register from Device
+    public static final int OUT = 62; //Output Character to Device from Register
+    public static final int CHK = 63; //Check Device Status to Register
 }
