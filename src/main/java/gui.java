@@ -56,8 +56,6 @@ public class gui extends javax.swing.JFrame {
 		jLabel4 = new JLabel();
 		jLabel5 = new JLabel();
 		jButtonInputWrite = new JButton();
-		jScrollPane1 = new JScrollPane();
-		jTextPaneInstructions = new JTextPane();
 		jSeparator1 = new JSeparator();
 		jSeparator2 = new JSeparator();
 		jTextFieldMAR = new JTextField();
@@ -107,6 +105,8 @@ public class gui extends javax.swing.JFrame {
 		label4 = new JLabel();
 		scrollPane1 = new JScrollPane();
 		consoleKeyboard = new JTextArea();
+		scrollPane2 = new JScrollPane();
+		displayPanel = new JTextArea();
 
 		//======== this ========
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -131,7 +131,7 @@ public class gui extends javax.swing.JFrame {
 		jTextFieldMBR.setBounds(60, 60, 320, jTextFieldMBR.getPreferredSize().height);
 
 		//---- jLabel3 ----
-		jLabel3.setText("History Instructions");
+		jLabel3.setText("Display Panel");
 		contentPane.add(jLabel3);
 		jLabel3.setBounds(new Rectangle(new Point(690, 10), jLabel3.getPreferredSize()));
 
@@ -191,13 +191,6 @@ public class gui extends javax.swing.JFrame {
 		jButtonInputWrite.setText("Add to Instruction Queue");
 		contentPane.add(jButtonInputWrite);
 		jButtonInputWrite.setBounds(new Rectangle(new Point(465, 670), jButtonInputWrite.getPreferredSize()));
-
-		//======== jScrollPane1 ========
-		{
-			jScrollPane1.setViewportView(jTextPaneInstructions);
-		}
-		contentPane.add(jScrollPane1);
-		jScrollPane1.setBounds(480, 30, 480, 260);
 		contentPane.add(jSeparator1);
 		jSeparator1.setBounds(new Rectangle(new Point(360, 130), jSeparator1.getPreferredSize()));
 		contentPane.add(jSeparator2);
@@ -373,7 +366,7 @@ public class gui extends javax.swing.JFrame {
 		buttonLoad.setText("Load");
 		buttonLoad.addActionListener(e -> buttonLoadActionPerformed(e));
 		contentPane.add(buttonLoad);
-		buttonLoad.setBounds(new Rectangle(new Point(740, 595), buttonLoad.getPreferredSize()));
+		buttonLoad.setBounds(new Rectangle(new Point(735, 595), buttonLoad.getPreferredSize()));
 		contentPane.add(memoryAddressTextField);
 		memoryAddressTextField.setBounds(855, 555, 95, memoryAddressTextField.getPreferredSize().height);
 
@@ -421,6 +414,13 @@ public class gui extends javax.swing.JFrame {
 		}
 		contentPane.add(scrollPane1);
 		scrollPane1.setBounds(695, 420, 250, 100);
+
+		//======== scrollPane2 ========
+		{
+			scrollPane2.setViewportView(displayPanel);
+		}
+		contentPane.add(scrollPane2);
+		scrollPane2.setBounds(490, 35, 455, 260);
 
 		{
 			// compute preferred size
@@ -521,7 +521,7 @@ public class gui extends javax.swing.JFrame {
 	private void jButtonIPLPerformed(java.awt.event.ActionEvent evt) { //Initialize the memory, registers and test program.
 		Simulator.setIPL();
 		showCurrentContent();
-		jTextPaneInstructions.setText("");
+		displayPanel.setText("");
 	}
 
 	/*button for run instruction one by one*/
@@ -584,7 +584,7 @@ public class gui extends javax.swing.JFrame {
 		String output = "";
 		for (int i = 0; i < Simulator.execPos; i++) {
 			output += (Simulator.instList[i] + "\n");
-			jTextPaneInstructions.setText(output);
+			displayPanel.setText(output);
 		}
 	}
 
@@ -612,7 +612,7 @@ public class gui extends javax.swing.JFrame {
 				JOptionPane.showMessageDialog(null, "Input 21 numbers in the console keyboard, separate by comma");
 			}
 			else {
-				consoleKeyboard.append("21 numbers are:" + "\n");
+				displayPanel.append("21 numbers are:" + "\n");
 				prog1Flag = true;
 				Simulator.loadProgram(prog1.pgm1);  // load the store part of program 1 into memory
 				Simulator.pc = Simulator.ext212(Simulator.dToB(100));  // the start mem position of store part
@@ -626,12 +626,13 @@ public class gui extends javax.swing.JFrame {
 	private void pg1FindActionPerformed(ActionEvent e) {
 		if (prog1Flag) {
 			System.out.println("Result:");
-			consoleKeyboard.append("Result:" + "\n");
+			displayPanel.append("Result:" + "\n");
 			Simulator.loadProgram(prog1.pgm2);  // load the find part of program 1 into memory
 			Simulator.pc = Simulator.ext212(Simulator.dToB(300));  // the start mem position of compare part
 			do {
 				Simulator.execInst(Simulator.memory[Simulator.bToD(Simulator.pc)]);  // execute the instruction on PC address in memory
 			} while (Simulator.bToD(Simulator.pc) >= 300 && Simulator.bToD(Simulator.pc) <= 370);
+			prog1Flag = false;
 		}
 	}
 
@@ -639,7 +640,7 @@ public class gui extends javax.swing.JFrame {
 	private void jButtonIPLActionPerformed(ActionEvent e) {
 		Simulator.setIPL();
 		showCurrentContent();
-		jTextPaneInstructions.setText("");
+		displayPanel.setText("");
 	}
 
 	private void jButtonSingleRunActionPerformed(ActionEvent e) {
@@ -712,8 +713,6 @@ public class gui extends javax.swing.JFrame {
 	private JLabel jLabel4;
 	private JLabel jLabel5;
 	private JButton jButtonInputWrite;
-	private JScrollPane jScrollPane1;
-	private JTextPane jTextPaneInstructions;
 	private JSeparator jSeparator1;
 	private JSeparator jSeparator2;
 	private JTextField jTextFieldMAR;
@@ -763,5 +762,7 @@ public class gui extends javax.swing.JFrame {
 	private JLabel label4;
 	private JScrollPane scrollPane1;
 	private JTextArea consoleKeyboard;
+	private JScrollPane scrollPane2;
+	private JTextArea displayPanel;
 	// End of variables declaration//GEN-END:variables
 }

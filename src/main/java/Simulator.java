@@ -112,7 +112,6 @@ public class Simulator {
 	    instIndicator = 5;  // set the instIndicator to tail
 	    initRegs();
 	    initMem();
-
     }
 
     /*initialize the registers*/
@@ -155,11 +154,83 @@ public class Simulator {
 		    case InstType.STX:
 			    STX(indexNumber, inst);
 			    break;
+			case InstType.AIR:
+			    AIR(gprNumber, inst);
+			    break;
+			case InstType.AMR:
+			    AMR(gprNumber, inst);
+			    break;
+            case InstType.AND:
+                AND(bToD(inst.substring(6, 8)), bToD(inst.substring(8, 10)), inst);
+                break;
+            case InstType.DVD:
+                DVD(bToD(inst.substring(6, 8)), bToD(inst.substring(8, 10)), inst);
+                break;
+            case InstType.JCC:
+                JCC(gprNumber, inst);
+                break;
+            case InstType.JGE:
+                JGE(gprNumber, inst);
+                break;
+            case InstType.JMA:
+                JMA(inst);
+                break;
+            case InstType.JNE:
+                JNE(gprNumber, inst);
+                break;
+            case InstType.JSR:
+                JSR(inst);
+                break;
+            case InstType.JZ:
+                JZ(gprNumber, inst);
+                break;
+            case InstType.MLT:
+                MLT(bToD(inst.substring(6, 8)), bToD(inst.substring(8, 10)), inst);
+                break;
+            case InstType.NOT:
+                NOT(bToD(inst.substring(6, 8)), bToD(inst.substring(8, 10)), inst);
+                break;
+            case InstType.ORR:
+                ORR(bToD(inst.substring(6, 8)), bToD(inst.substring(8, 10)), inst);
+                break;
+            case InstType.RFS:
+                RFS(inst);
+                break;
+            case InstType.RRC:
+                RRC(gprNumber, inst);
+                break;
+            case InstType.SIR:
+                SIR(gprNumber, inst);
+                break;
+            case InstType.SMR:
+                SMR(gprNumber, inst);
+                break;
+            case InstType.SOB:
+                SOB(gprNumber, inst);
+                break;
+            case InstType.SRC:
+                SRC(gprNumber, inst);
+                break;
+            case InstType.TRR:
+                TRR(bToD(inst.substring(6, 8)), bToD(inst.substring(8, 10)), inst);
+                break;
+            case InstType.IN:
+                IN(gprNumber, inst);
+                break;
+            case InstType.OUT:
+                OUT(gprNumber, inst);
+                break;
+            case InstType.CHK:
+                CHK(gprNumber, inst);
+                break;
 	    }
     }
 
     /*initialize value in some memory address for IPL program*/
     public static void initMem() {
+        for (int i = 0; i < 2048; i++) {
+            memory[i] = "0000000000000000";
+        }
         memory[30] = "0000000000001110";
         memory[31] = "1010101010101010";
         indexRegister[0] = "0000000000001010";
@@ -518,8 +589,17 @@ public class Simulator {
         }
     }
 
+    public static void IN(int gprNum, String ins) {
+        //String val =
+    }
 
+    public static void OUT(int gprNum, String ins) {
 
+    }
+
+    public static void CHK(int gprNum, String ins) {
+
+    }
 
     /*binary to decimal*/
     public static int bToD(String bi)
