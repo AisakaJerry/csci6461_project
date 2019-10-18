@@ -361,11 +361,65 @@ public class Simulator {
 
     /*MLT instruction: Multiply Register by Register*/
     public static void MLT(int rx, int ry, String ins)
-    { }
+    {
+        if(rx == 0 && ry == 2) {
+            int result;
+            result = bToD(gpr[rx]) * bToD(gpr[ry]);
+            if (result < 2147483647)
+            {
+                String s = dToB(result);
+                while (s.length() < 32)
+                    s = "0" + s;
+                gpr[rx] = s.substring(0, 16);
+                gpr[rx+1] = s.substring(16, 32);
+            }
+            else
+                cc[0] = "0001";
+        }
+        if(ry == 0 && rx == 2)
+        {
+            int result;
+            result = bToD(gpr[rx]) * bToD(gpr[ry]);
+            if (result < 2147483647)
+            {
+                String s = dToB(result);
+                while (s.length() < 32)
+                    s = "0" + s;
+                gpr[rx] = s.substring(0, 16);
+                gpr[rx+1] = s.substring(16, 32);
+            }
+            else
+                cc[0] = "0001";
+        }
+    }
 
     /*DVD instruction: Divide Register by Register*/
     public static void DVD(int rx, int ry, String ins)
-    { }
+    {
+        if(rx == 0 && ry == 2) {
+            if(bToD(gpr[ry]) == 0)
+            {
+                cc[2] = "0001";
+                throw new ArithmeticException("Condition code 3 Divide by zero");
+            }
+            else
+            {
+                gpr[rx]= ext216(dToB(bToD(gpr[rx])/bToD(gpr[ry])));
+                gpr[rx+1]= ext216(dToB(bToD(gpr[rx])%bToD(gpr[ry])));
+            }
+        }
+
+        if(rx == 2 && ry == 0)
+        {
+            if(bToD(gpr[ry]) == 0)
+                throw new ArithmeticException("Condition code 3 Divide by zero");
+            else
+            {
+                gpr[rx]= ext216(dToB(bToD(gpr[rx])/bToD(gpr[ry])));
+                gpr[rx+1]= ext216(dToB(bToD(gpr[rx])%bToD(gpr[ry])));
+            }
+        }
+    }
 
     /*TRR instruction: Test the Equality of Register and Register*/
     public static void TRR(int rxNum, int ryNum, String ins)
