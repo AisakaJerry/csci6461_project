@@ -1,4 +1,6 @@
 import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Simulator {
     /*Data structures for memory and registers*/
@@ -550,11 +552,29 @@ public class Simulator {
         return s;
     }
 
+    /* extend strings to 12 bits with 0 */
+    public static String ext212(String s) {
+        int len = s.length();
+        if (len < 12) {
+            for (int i = 0; i < 12 - len; i++) {
+                s = "0" + s;
+            }
+        }
+        return s;
+    }
+
+    public static void loadProgram(HashMap<String, String> program) {
+        if (program != null) {
+            for (Map.Entry<String, String> entry : program.entrySet()) {
+                int addr = Integer.parseInt(entry.getKey());
+                String value = entry.getValue();
+                memory[addr] = value;
+            }
+        }
+    }
 
     public static void main(String[] args)
-    {
-
-    }
+    {    }
 
 }
 
