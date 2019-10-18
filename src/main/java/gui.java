@@ -13,9 +13,7 @@ import javax.swing.*;
  */
 public class gui extends javax.swing.JFrame {
 
-	/**
-	 * Creates new form gui
-	 */
+	private boolean prog1Flag = false;
 	private void jTextFieldInputAdressActionPerformed(ActionEvent e) {
 		// TODO add your code here
 	}
@@ -33,9 +31,6 @@ public class gui extends javax.swing.JFrame {
 		Simulator.memory[memAddress] = memValue;
 	}
 
-	public gui() {
-		initComponents();
-	}
 
 	/**
 	 * This method is called from within the constructor to initialize the form.
@@ -106,6 +101,12 @@ public class gui extends javax.swing.JFrame {
 		label1 = new JLabel();
 		label2 = new JLabel();
 		buttonStore = new JButton();
+		pg1Read = new JButton();
+		pg1Find = new JButton();
+		label3 = new JLabel();
+		label4 = new JLabel();
+		scrollPane1 = new JScrollPane();
+		consoleKeyboard = new JTextArea();
 
 		//======== this ========
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -190,15 +191,13 @@ public class gui extends javax.swing.JFrame {
 		jButtonInputWrite.setText("Add to Instruction Queue");
 		contentPane.add(jButtonInputWrite);
 		jButtonInputWrite.setBounds(new Rectangle(new Point(465, 670), jButtonInputWrite.getPreferredSize()));
-		jButtonInputWrite.addActionListener(e -> jButtonInputWriteActionPerformed(e));
-
 
 		//======== jScrollPane1 ========
 		{
 			jScrollPane1.setViewportView(jTextPaneInstructions);
 		}
 		contentPane.add(jScrollPane1);
-		jScrollPane1.setBounds(480, 30, 480, 480);
+		jScrollPane1.setBounds(480, 30, 480, 260);
 		contentPane.add(jSeparator1);
 		jSeparator1.setBounds(new Rectangle(new Point(360, 130), jSeparator1.getPreferredSize()));
 		contentPane.add(jSeparator2);
@@ -244,16 +243,12 @@ public class gui extends javax.swing.JFrame {
 		jButtonMBR.addActionListener(e -> jButtonMBRActionPerformed(e));
 		contentPane.add(jButtonMBR);
 		jButtonMBR.setBounds(new Rectangle(new Point(380, 60), jButtonMBR.getPreferredSize()));
-		jButtonMBR.addActionListener(e -> jButtonMBRActionPerformed(e));
-
 
 		//---- jButtonMAR ----
 		jButtonMAR.setText("Write");
 		jButtonMAR.addActionListener(e -> jButtonMARActionPerformed(e));
 		contentPane.add(jButtonMAR);
 		jButtonMAR.setBounds(new Rectangle(new Point(380, 30), jButtonMAR.getPreferredSize()));
-		jButtonMAR.addActionListener(e -> jButtonMARActionPerformed(e));
-
 
 		//---- jLabelR3 ----
 		jLabelR3.setText("R3");
@@ -313,19 +308,17 @@ public class gui extends javax.swing.JFrame {
 
 		//---- jButtonSingleRun ----
 		jButtonSingleRun.setText("Single Run");
+		jButtonSingleRun.addActionListener(e -> jButtonSingleRunActionPerformed(e));
 		contentPane.add(jButtonSingleRun);
 		jButtonSingleRun.setBounds(new Rectangle(new Point(475, 710), jButtonSingleRun.getPreferredSize()));
-		jButtonSingleRun.addActionListener(e -> jButtonSingleRunPerformed(e));
-
 
 		//---- jButtonIPL ----
-		jButtonIPL.setText("IPL/RESET");
+		jButtonIPL.setText("IPL");
+		jButtonIPL.addActionListener(e -> jButtonIPLActionPerformed(e));
 		contentPane.add(jButtonIPL);
 		jButtonIPL.setBounds(new Rectangle(new Point(360, 710), jButtonIPL.getPreferredSize()));
 		contentPane.add(jSeparator5);
 		jSeparator5.setBounds(10, 460, 440, 10);
-		jButtonIPL.addActionListener(e -> jButtonIPLPerformed(e));
-
 
 		//---- jLabel15 ----
 		jLabel15.setText("16 bit");
@@ -374,31 +367,60 @@ public class gui extends javax.swing.JFrame {
 		contentPane.add(jLabelMSR);
 		jLabelMSR.setBounds(20, 590, 290, 30);
 		contentPane.add(memoryValueTextField);
-		memoryValueTextField.setBounds(515, 555, 160, memoryValueTextField.getPreferredSize().height);
+		memoryValueTextField.setBounds(685, 555, 160, memoryValueTextField.getPreferredSize().height);
 
 		//---- buttonLoad ----
 		buttonLoad.setText("Load");
 		buttonLoad.addActionListener(e -> buttonLoadActionPerformed(e));
 		contentPane.add(buttonLoad);
-		buttonLoad.setBounds(new Rectangle(new Point(560, 595), buttonLoad.getPreferredSize()));
+		buttonLoad.setBounds(new Rectangle(new Point(740, 595), buttonLoad.getPreferredSize()));
 		contentPane.add(memoryAddressTextField);
-		memoryAddressTextField.setBounds(720, 555, 95, memoryAddressTextField.getPreferredSize().height);
+		memoryAddressTextField.setBounds(855, 555, 95, memoryAddressTextField.getPreferredSize().height);
 
 		//---- label1 ----
 		label1.setText("Memory Value");
 		contentPane.add(label1);
-		label1.setBounds(555, 530, 90, 21);
+		label1.setBounds(720, 530, 90, 21);
 
 		//---- label2 ----
 		label2.setText("Memory Address");
 		contentPane.add(label2);
-		label2.setBounds(720, 525, 105, 26);
+		label2.setBounds(850, 525, 105, 26);
 
 		//---- buttonStore ----
 		buttonStore.setText("Store");
 		buttonStore.addActionListener(e -> buttonStoreActionPerformed(e));
 		contentPane.add(buttonStore);
-		buttonStore.setBounds(new Rectangle(new Point(735, 595), buttonStore.getPreferredSize()));
+		buttonStore.setBounds(new Rectangle(new Point(865, 595), buttonStore.getPreferredSize()));
+
+		//---- pg1Read ----
+		pg1Read.setText("Read 20 numbers");
+		pg1Read.addActionListener(e -> pg1ReadActionPerformed(e));
+		contentPane.add(pg1Read);
+		pg1Read.setBounds(new Rectangle(new Point(515, 440), pg1Read.getPreferredSize()));
+
+		//---- pg1Find ----
+		pg1Find.setText("find closest");
+		pg1Find.addActionListener(e -> pg1FindActionPerformed(e));
+		contentPane.add(pg1Find);
+		pg1Find.setBounds(515, 470, 120, pg1Find.getPreferredSize().height);
+
+		//---- label3 ----
+		label3.setText("program 1");
+		contentPane.add(label3);
+		label3.setBounds(540, 405, 65, 26);
+
+		//---- label4 ----
+		label4.setText("Console Keyboard");
+		contentPane.add(label4);
+		label4.setBounds(new Rectangle(new Point(765, 395), label4.getPreferredSize()));
+
+		//======== scrollPane1 ========
+		{
+			scrollPane1.setViewportView(consoleKeyboard);
+		}
+		contentPane.add(scrollPane1);
+		scrollPane1.setBounds(695, 420, 250, 100);
 
 		{
 			// compute preferred size
@@ -554,7 +576,7 @@ public class gui extends javax.swing.JFrame {
 			Simulator.instList[Simulator.instIndicator] = Simulator.memory[Simulator.bToD(Simulator.pc)];
 			Simulator.instIndicator++;
 			jTextFieldPC.setText("");
-			Simulator.pc = "";
+			//Simulator.pc = "";
 		}
 	}
 	/*show all instructions have executed on the right text area*/
@@ -583,6 +605,59 @@ public class gui extends javax.swing.JFrame {
 		//jTextFieldCC.setText(Simulator.cc);
 	}
 
+	private void pg1ReadActionPerformed(ActionEvent e) {
+		if (!prog1Flag) {
+			System.out.println("Input 20 numbers and the number you want to compare:");
+			if (consoleKeyboard.getText() == null || consoleKeyboard.getText().length() == 0) {
+				JOptionPane.showMessageDialog(null, "Input 21 numbers in the console keyboard, separate by comma");
+			}
+			else {
+				consoleKeyboard.append("21 numbers are:" + "\n");
+				prog1Flag = true;
+				Simulator.loadProgram(prog1.pgm1);  // load the store part of program 1 into memory
+				Simulator.pc = Simulator.ext212(Simulator.dToB(100));  // the start mem position of store part
+				do {
+					Simulator.execInst(Simulator.memory[Simulator.bToD(Simulator.pc)]);  // execute the instruction on PC address in memory
+				} while (Simulator.bToD(Simulator.pc) >= 100 && Simulator.bToD(Simulator.pc) <= 170);
+			}
+		}
+	}
+
+	private void pg1FindActionPerformed(ActionEvent e) {
+		if (prog1Flag) {
+			System.out.println("Result:");
+			consoleKeyboard.append("Result:" + "\n");
+			Simulator.loadProgram(prog1.pgm2);  // load the find part of program 1 into memory
+			Simulator.pc = Simulator.ext212(Simulator.dToB(300));  // the start mem position of compare part
+			do {
+				Simulator.execInst(Simulator.memory[Simulator.bToD(Simulator.pc)]);  // execute the instruction on PC address in memory
+			} while (Simulator.bToD(Simulator.pc) >= 300 && Simulator.bToD(Simulator.pc) <= 370);
+		}
+	}
+
+
+	private void jButtonIPLActionPerformed(ActionEvent e) {
+		Simulator.setIPL();
+		showCurrentContent();
+		jTextPaneInstructions.setText("");
+	}
+
+	private void jButtonSingleRunActionPerformed(ActionEvent e) {
+		if (Simulator.execPos < 100) {
+			if (!Simulator.instList[Simulator.execPos].equals("")) {
+				jTextFieldIR.setText(Simulator.instList[Simulator.execPos]);
+				Simulator.execInst(Simulator.instList[Simulator.execPos]);
+				Simulator.execPos++;
+				System.out.println(Simulator.execPos);
+				showCurrentContent();
+				showInstructions();
+			}
+		}
+	}
+
+	public gui() {
+		initComponents();
+	}
 	/**
 	 * @param args the command line arguments
 	 */
@@ -682,5 +757,11 @@ public class gui extends javax.swing.JFrame {
 	private JLabel label1;
 	private JLabel label2;
 	private JButton buttonStore;
+	private JButton pg1Read;
+	private JButton pg1Find;
+	private JLabel label3;
+	private JLabel label4;
+	private JScrollPane scrollPane1;
+	private JTextArea consoleKeyboard;
 	// End of variables declaration//GEN-END:variables
 }
