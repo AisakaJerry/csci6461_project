@@ -626,12 +626,17 @@ public class gui extends javax.swing.JFrame {
 	private void pg1FindActionPerformed(ActionEvent e) {
 		if (prog1Flag) {
 			System.out.println("Result:");
-			displayPanel.append("Result:" + "\n");
+			displayPanel.append("Result:");
 			Simulator.loadProgram(prog1.pgm2);  // load the find part of program 1 into memory
-			Simulator.pc = Simulator.ext212(Simulator.dToB(300));  // the start mem position of compare part
+			Simulator.pc = Simulator.ext212(Simulator.dToB(298));  // the start mem position of compare part
 			do {
 				Simulator.execInst(Simulator.memory[Simulator.bToD(Simulator.pc)]);  // execute the instruction on PC address in memory
-			} while (Simulator.bToD(Simulator.pc) >= 300 && Simulator.bToD(Simulator.pc) <= 370);
+			} while (Simulator.bToD(Simulator.pc) >= 298 && Simulator.bToD(Simulator.pc) <= 341);
+			Simulator.loadProgram(prog1.pgm3);  // load the print program into memory
+			Simulator.pc = Simulator.ext212(Simulator.dToB(1800));  // the start mem position of print part
+			do {
+				Simulator.execInst(Simulator.memory[Simulator.bToD(Simulator.pc)]);  // execute the instruction on PC address in memory
+			} while (Simulator.bToD(Simulator.pc) >= 1800 && Simulator.bToD(Simulator.pc) <= 1869);
 			prog1Flag = false;
 		}
 	}
@@ -700,8 +705,8 @@ public class gui extends javax.swing.JFrame {
 	// Generated using JFormDesigner Evaluation license - unknown
 	private JLabel LabelMAR;
 	private JLabel LabelMBR;
-	private JTextField jTextFieldR1;
-	private JTextField jTextFieldMBR;
+	public static JTextField jTextFieldR1;
+	public static JTextField jTextFieldMBR;
 	private JLabel jLabel3;
 	private JButton jButtonR0;
 	private JButton jButtonR1;
@@ -715,13 +720,13 @@ public class gui extends javax.swing.JFrame {
 	private JButton jButtonInputWrite;
 	private JSeparator jSeparator1;
 	private JSeparator jSeparator2;
-	private JTextField jTextFieldMAR;
-	private JTextField jTextFieldR0;
-	private JTextField jTextFieldR3;
-	private JTextField jTextFieldR2;
-	private JTextField jTextFieldX3;
-	private JTextField jTextFieldX2;
-	private JTextField jTextFieldX1;
+	public static JTextField jTextFieldMAR;
+	public static JTextField jTextFieldR0;
+	public static JTextField jTextFieldR3;
+	public static JTextField jTextFieldR2;
+	public static JTextField jTextFieldX3;
+	public static JTextField jTextFieldX2;
+	public static JTextField jTextFieldX1;
 	private JButton jButtonMBR;
 	private JButton jButtonMAR;
 	private JLabel jLabelR3;
@@ -761,8 +766,8 @@ public class gui extends javax.swing.JFrame {
 	private JLabel label3;
 	private JLabel label4;
 	private JScrollPane scrollPane1;
-	private JTextArea consoleKeyboard;
+	public static JTextArea consoleKeyboard;
 	private JScrollPane scrollPane2;
-	private JTextArea displayPanel;
+	public static JTextArea displayPanel;
 	// End of variables declaration//GEN-END:variables
 }

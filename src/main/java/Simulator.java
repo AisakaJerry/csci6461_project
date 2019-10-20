@@ -11,9 +11,10 @@ public class Simulator {
     public static String mar = "0000000000000000";
     public static String mbr = "0000000000000000";
     public static String[] mfr = new String[4]; //Machine Fault Register
-    public static String pc; //Program Counter
+    public static String pc = ""; //Program Counter
     public static String[] cc = new String[4]; //Condition Code
     public static String immed; // immediate value
+    public static String outBuffer = "";
 
     public static String[] instList = new String[100];  // instruction list waiting for execute
 	public static int instIndicator = 0;   //a pointer to indicate current location of instructionList
@@ -50,7 +51,7 @@ public class Simulator {
         if(indirect == 1)
         {
             if (indexNum == 0) {
-                address = Integer.parseInt(memory[addr]);
+                address = bToD(memory[addr]);
             }
             else {
                 address = bToD(memory[bToD(indexRegister[indexNum - 1]) + addr]);
@@ -137,6 +138,7 @@ public class Simulator {
 	    indexNumber = bToD(inst.substring(8, 10));
 	    indirect = bToD(inst.substring(10, 11));
 	    address = bToD(inst.substring(11, 16));
+	    immed = inst.substring(11, 16);
 	    System.out.println(inst);
 	    switch(opcode) {
 		    case InstType.LDR:
@@ -223,7 +225,26 @@ public class Simulator {
             case InstType.CHK:
                 CHK(gprNumber, inst);
                 break;
+            case InstType.HLT:
+                HLT(inst);
+                break;
 	    }
+	    if (!((opcode >= 10)&&(opcode <= 17))) {
+	        if (!pc.equals("")) {
+                int temp = bToD(pc);
+                temp++;
+                pc = ext212(dToB(temp));
+            }
+        }
+	    gui.jTextFieldR0.setText(gpr[0]);
+        gui.jTextFieldR1.setText(gpr[1]);
+        gui.jTextFieldR2.setText(gpr[2]);
+        gui.jTextFieldR3.setText(gpr[3]);
+        gui.jTextFieldX1.setText(indexRegister[0]);
+        gui.jTextFieldX2.setText(indexRegister[1]);
+        gui.jTextFieldX3.setText(indexRegister[2]);
+        gui.jTextFieldMAR.setText(mar);
+        gui.jTextFieldMBR.setText(mbr);
     }
 
     /*initialize value in some memory address for IPL program*/
@@ -250,7 +271,8 @@ public class Simulator {
             mbr = memoryVal;  // update the value in MBR
         }
         else {
-            gpr[gprNum] = memory[Integer.parseInt(memory[address])];
+            //gpr[gprNum] = memory[Integer.parseInt(memory[address])];
+            gpr[gprNum] = memoryVal;
             mbr = memoryVal;
         }
     }
@@ -297,12 +319,14 @@ public class Simulator {
         int address;
         int temp = 0;
         address = FindEA(ins);
-        if(memory[Integer.parseInt(gpr[gprNum])] == null)
-            pc = ext216(dToB(address));
-        else
+        if(signB2D(gpr[gprNum]) == 0) {
+            pc = ext212(dToB(address));
+        }
+        else{
             temp = bToD(pc);
             temp++;
-            pc = ext216(dToB(temp));
+            pc = ext212(dToB(temp));
+        }
     }
 
     /*JNE instruction: Jump If Not Equal*/
@@ -311,12 +335,14 @@ public class Simulator {
         int address;
         int temp = 0;
         address = FindEA(ins);
-        if(memory[Integer.parseInt(gpr[gprNum])] != null)
-            pc = ext216(dToB(address));
-        else
+        if(signB2D(gpr[gprNum]) != 0) {
+            pc = ext212(dToB(address));
+        }
+        else {
             temp = bToD(pc);
             temp++;
-            pc = ext216(dToB(temp));
+            pc = ext212(dToB(temp));
+        }
     }
 
     /*JCC instruction: Jump If Condition Code*/
@@ -325,12 +351,14 @@ public class Simulator {
         int address;
         int temp = 0;
         address = FindEA(ins);
-        if(gprNum == 1)
-            pc = ext216(dToB(address));
-        else
+        if(cc[gprNum] == "0001") {
+            pc = ext212(dToB(address));
+        }
+        else {
             temp = bToD(pc);
             temp++;
-            pc = ext216(dToB(temp));
+            pc = ext212(dToB(temp));
+        }
     }
 
     /*JMA instruction: Unconditional Jump To Address(r is ignored)*/
@@ -338,7 +366,7 @@ public class Simulator {
     {
         int address;
         address = FindEA(ins);
-        pc = ext216(dToB(address));
+        pc = ext212(dToB(address));
     }
 
     /*JSR instruction: Jump and Save Return Address*/
@@ -348,9 +376,9 @@ public class Simulator {
         address = FindEA(ins);
         temp = bToD(pc);
         temp++;
-        pc = ext216(dToB(temp));
+        pc = ext212(dToB(temp));
         gpr[3] = pc;
-        pc = ext216(dToB(address));
+        pc = ext212(dToB(address));
     }
 
     /*RFS instruction: Return From Subroutine w/ return code as Immed
@@ -358,7 +386,7 @@ public class Simulator {
     public static void RFS(String ins)
     {
         gpr[0] = immed;
-        pc = gpr[3];
+        pc = gpr[3].substring(4);  // 16bit to 12bit
     }
 
     /*SOB instruction: Subtract One and Branch*/
@@ -367,13 +395,15 @@ public class Simulator {
         int address;
         int temp = 0;
         address = FindEA(ins);
-        gpr[gprNum] = dToB(bToD(gpr[gprNum]) - 1);
-        if(bToD(gpr[gprNum]) > 0)
-            pc = ext216(dToB(address));
-        else
+        gpr[gprNum] = ext216(signD2B(signB2D(gpr[gprNum]) - 1));
+        if(bToD(gpr[gprNum]) > 0) {
+            pc = ext212(dToB(address));
+        }
+        else {
             temp = bToD(pc);
             temp++;
-            pc = ext216(dToB(temp));
+            pc = ext212(dToB(temp));
+        }
     }
 
     /*JGE instruction: Jump Greater Than or Equal To*/
@@ -382,12 +412,14 @@ public class Simulator {
         int address;
         int temp = 0;
         address = FindEA(ins);
-        if(bToD(gpr[gprNum]) >= 0)
-            pc = ext216(dToB(address));
-        else
+        if(signB2D(gpr[gprNum]) >= 0) {
+            pc = ext212(dToB(address));
+        }
+        else {
             temp = bToD(pc);
             temp++;
-            pc = ext216(dToB(temp));
+            pc = ext212(dToB(temp));
+        }
     }
 
     /*AMR instruction: Add Memory To Register*/
@@ -395,7 +427,7 @@ public class Simulator {
     {
         int address;
         address = FindEA(ins);
-        gpr[gprNum] = ext216(dToB(bToD(gpr[gprNum]) + bToD(memory[address])));
+        gpr[gprNum] = ext216(signD2B(signB2D(gpr[gprNum]) + signB2D(memory[address])));
     }
 
     /*SMR instruction: Subtract Memory From Register*/
@@ -403,20 +435,18 @@ public class Simulator {
     {
         int address;
         address = FindEA(ins);
-        gpr[gprNum] = ext216(dToB(bToD(gpr[gprNum]) - bToD(memory[address])));
+        gpr[gprNum] = ext216(signD2B(signB2D(gpr[gprNum]) - signB2D(memory[address])));
     }
 
     /*AIR instruction: Add Immediate to Register*/
     public static void AIR(int gprNum, String ins)
     {
-        int address;
-        address = FindEA(ins);
-        if(immed == null)
+        if(immed == null) {
             ;
-        else if(bToD(gpr[gprNum]) == 0)
-            gpr[gprNum] = immed;
-        else
-            gpr[gprNum] = ext216(dToB(bToD(gpr[gprNum]) + bToD(immed)));
+        }
+        else {
+            gpr[gprNum] = ext216(signD2B(signB2D(gpr[gprNum]) + signB2D(immed)));
+        }
     }
 
     /*SIR instruction: Subtract  Immediate  from Register*/
@@ -424,12 +454,12 @@ public class Simulator {
     {
         int address;
         address = FindEA(ins);
-        if(immed == null)
+        if(immed == null) {
             ;
-        else if(bToD(gpr[gprNum]) == 0)
-            gpr[gprNum] = immed;
-        else
-            gpr[gprNum] = ext216(dToB(bToD(gpr[gprNum]) - bToD(immed)));
+        }
+        else {
+            gpr[gprNum] = ext216(signD2B(signB2D(gpr[gprNum]) - signB2D(immed)));
+        }
     }
 
     /*MLT instruction: Multiply Register by Register*/
@@ -437,12 +467,18 @@ public class Simulator {
     {
         if(rx == 0 && ry == 2) {
             int result;
-            result = bToD(gpr[rx]) * bToD(gpr[ry]);
+            result = signB2D(gpr[rx]) * signB2D(gpr[ry]);
             if (result < 2147483647)
             {
-                String s = dToB(result);
-                while (s.length() < 32)
-                    s = "0" + s;
+                String s = signD2B(result);
+                if (s.substring(0, 1).equals("0")) {
+                    while (s.length() < 32)
+                        s = "0" + s;
+                }
+                else {
+                    while (s.length() < 32)
+                        s = "1" + s;
+                }
                 gpr[rx] = s.substring(0, 16);
                 gpr[rx+1] = s.substring(16, 32);
             }
@@ -452,12 +488,18 @@ public class Simulator {
         if(ry == 0 && rx == 2)
         {
             int result;
-            result = bToD(gpr[rx]) * bToD(gpr[ry]);
+            result = signB2D(gpr[rx]) * signB2D(gpr[ry]);
             if (result < 2147483647)
             {
-                String s = dToB(result);
-                while (s.length() < 32)
-                    s = "0" + s;
+                String s = signD2B(result);
+                if (s.substring(0, 1).equals("0")) {
+                    while (s.length() < 32)
+                        s = "0" + s;
+                }
+                else {
+                    while (s.length() < 32)
+                        s = "1" + s;
+                }
                 gpr[rx] = s.substring(0, 16);
                 gpr[rx+1] = s.substring(16, 32);
             }
@@ -467,29 +509,16 @@ public class Simulator {
     }
 
     /*DVD instruction: Divide Register by Register*/
-    public static void DVD(int rx, int ry, String ins)
-    {
-        if(rx == 0 && ry == 2) {
-            if(bToD(gpr[ry]) == 0)
-            {
+    public static void DVD(int rx, int ry, String ins) {
+        if ((rx == 0 || rx == 2) && (ry == 0 || ry == 2)) {
+            if (signB2D(gpr[ry]) == 0) {
                 cc[2] = "0001";
-                throw new ArithmeticException("Condition code 3 Divide by zero");
-            }
-            else
-            {
-                gpr[rx]= ext216(dToB(bToD(gpr[rx])/bToD(gpr[ry])));
-                gpr[rx+1]= ext216(dToB(bToD(gpr[rx])%bToD(gpr[ry])));
-            }
-        }
-
-        if(rx == 2 && ry == 0)
-        {
-            if(bToD(gpr[ry]) == 0)
-                throw new ArithmeticException("Condition code 3 Divide by zero");
-            else
-            {
-                gpr[rx]= ext216(dToB(bToD(gpr[rx])/bToD(gpr[ry])));
-                gpr[rx+1]= ext216(dToB(bToD(gpr[rx])%bToD(gpr[ry])));
+                //throw new ArithmeticException("Condition code 3 Divide by zero");
+            } else {
+                int quotient = (signB2D(gpr[rx]) / signB2D(gpr[ry]));
+                int remain = (signB2D(gpr[rx]) % signB2D(gpr[ry]));
+                gpr[rx] = ext216(signD2B(quotient));
+                gpr[rx + 1] = ext216(signD2B(remain));
             }
         }
     }
@@ -497,10 +526,12 @@ public class Simulator {
     /*TRR instruction: Test the Equality of Register and Register*/
     public static void TRR(int rxNum, int ryNum, String ins)
     {
-        if(bToD(gpr[rxNum]) == bToD(gpr[ryNum]))
+        if(bToD(gpr[rxNum]) == bToD(gpr[ryNum])) {
             cc[3] = "0001";
-        else
+        }
+        else {
             cc[3] = "0000";
+        }
     }
 
     /*AND instruction: Logical And of Register and Register*/
@@ -518,14 +549,16 @@ public class Simulator {
     /*NOT instruction: Logical Not of Register To Register*/
     public static void NOT(int rxNum, int ryNum, String ins)
     {
-        gpr[rxNum] = ext216(dToB(~(bToD(gpr[rxNum]))));
+        gpr[rxNum] = ext216(signD2B(~(signB2D(gpr[rxNum]))));
     }
 
 
     /*SRC instruction: Shift Register by Count*/
     public static void SRC(int gprNum, String ins)
     {
-
+        count = bToD(ins.substring(12, 16));
+        AOrL = bToD(ins.substring(8, 9));
+        LOrR = bToD(ins.substring(9, 10));
         String temp;
         temp = gpr[gprNum];
         int x = bToD(temp);
@@ -566,6 +599,9 @@ public class Simulator {
     /*Rotate Register by Count*/
     public static void RRC(int gprNum, String ins)
     {
+        count = bToD(ins.substring(12, 16));
+        AOrL = bToD(ins.substring(8, 9));
+        LOrR = bToD(ins.substring(9, 10));
         String temp;
         temp = gpr[gprNum];
         int x = bToD(temp);
@@ -590,15 +626,24 @@ public class Simulator {
     }
 
     public static void IN(int gprNum, String ins) {
-        //String val =
+        String val = gui.consoleKeyboard.getText();
+        char chr = val.charAt(0);
+        gpr[gprNum] = ext216(dToB((int)chr));
+        String newVal = val.substring(1);
+        gui.consoleKeyboard.setText(newVal);
     }
 
     public static void OUT(int gprNum, String ins) {
-
+        char chr = (char) bToD(gpr[gprNum]);
+        String res = String.valueOf(chr);
+        gui.displayPanel.append(res);
     }
 
     public static void CHK(int gprNum, String ins) {
+    }
 
+    public static void HLT(String ins) {
+        // Do nothing
     }
 
     /*binary to decimal*/
@@ -619,6 +664,29 @@ public class Simulator {
             n = n / 2;
         }
         return binary;
+    }
+
+    public static int signB2D(String bi) {
+        if (bi.length() < 16) {
+            return (bToD(bi));
+        }
+        else {
+            if (bi.substring(0, 1).equals("0")){
+                return (bToD(bi));
+            }
+            else {
+                return (-1 * ((int) Math.pow(2, 16) - bToD(bi)));
+            }
+        }
+    }
+
+    public static String signD2B(int n) {
+        if (n >= 0) {
+            return (ext216(dToB(n)));
+        }
+        else {
+            return dToB((int)Math.pow(2, 16) + n);
+        }
     }
 
     /*extend strings to 16 bits with 0*/
@@ -653,13 +721,14 @@ public class Simulator {
         }
     }
 
-    public static void main(String[] args)
+    public static void main(String[] args)  // don't need to implement this
     {    }
 
 }
 
 /*class for different instruction types*/
 class InstType {
+    public static final int HLT = 0; // Halt the program
     public static final int LDR = 1; //Load Register From Memory
     public static final int STR = 2; //Store Register To Memory
     public static final int LDA = 3; //Load Register with Address

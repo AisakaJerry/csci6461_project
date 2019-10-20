@@ -28,13 +28,13 @@ public class prog1 {
 		pgm1.put("112", "0011010000111100");// JMA to c(memory 28) means jump to (2)
 		// (1) it is a ','
 		pgm1.put("122", "0000100000111101");// Store r0 into memory with a location of c(memory 29)
-		pgm1.put("123", "‭0111110010001111");// reset r0
+		pgm1.put("123", "0111110010001111");// reset r0
 		pgm1.put("124", "0001100000001010");// AIR r0, 10
-		pgm1.put("125", "1111100000000001");// print r0 to console
+		pgm1.put("125", "1111100000000001");// print r0 = \n to console
 		pgm1.put("126", "0000110100111101");// Load r1 with content of memory address 29
 		pgm1.put("127", "0001100100000001");// AIR r1 with 1
-		pgm1.put("128", "0000100100011101");// Store r1 into memory address 29
-		pgm1.put("129", "‭0111110010001111");// Reset r0
+		pgm1.put("128", "0000100100011101");// Store r1 into memory address 29 // store to next memory slot
+		pgm1.put("129", "0111110010001111");// Reset r0
 		pgm1.put("130", "0000111000111100");// Load r2 with c(memory 28)
 		pgm1.put("131", "0001101000010100");// AIR r2, 20
 		pgm1.put("132", "0001101000010100");// AIR r2, 20
@@ -60,7 +60,7 @@ public class prog1 {
 		pgm1.put("158", "0001111000010100");// SIR r2, 20
 		pgm1.put("159", "0001111000010100");// SIR r2, 20
 		pgm1.put("160", "0000101000011100");// Store r2 into location memory 28
-		pgm1.put("161", "0011010000111100");// JMA to c(memory 28) means jump to (3)
+		pgm1.put("161", "0011010000111100");// JMA to c(memory 28) means jump to (0)
 		// (3)
 		pgm1.put("162", "0000111000111100");// Load r2 with c(memory 28)s
 		pgm1.put("163", "0001111000010100");// SIR r2, 20
@@ -68,16 +68,118 @@ public class prog1 {
 		pgm1.put("165", "0001111000010100");// SIR r2, 20
 		pgm1.put("166", "0000101000011100");// Store r2 into location memory 28
 		pgm1.put("167", "0100001100111100");// SOB r3, c(memory 28)
-		pgm1.put("168", "‭0111110010001111");// reset r0
+		pgm1.put("168", "0111110010001111");// reset r0
 		pgm1.put("169", "0001100000000001");// AIR r0, 1
 		pgm1.put("170", "0000100000011110");// store r0 to m(30)
 	}
 
 	public static HashMap<String, String> pgm2 = new HashMap<>();
 	static {
-		pgm2.put("300", "AIR r0 7");
-		//pgm2.put("301", "");
+		pgm2.put("28", "0000000100101101"); // 301 into m28: head of program
+		pgm2.put("29", "0111111111111111"); // max number = 32767 to m(299)
+		pgm2.put("31", "0000000100110010"); // 306 into m31
+		pgm2.put("298", "0111110010001111"); // reset r0
+		pgm2.put("299", "0001100000000111");  // AIR r0 7
+		pgm2.put("300", "0000100000011110");  // STR r0 m30
+		// (0)
+		pgm2.put("301", "0000011000111110");    // LDR r2 m(m30)
+		pgm2.put("302", "0001011000011011");    // SMR r2, m27
+		pgm2.put("303", "0100011000111111");  // JGE r2 m31 if r2>=0: continue to 306
+
+		pgm2.put("304", "0110011000000000");      // else:
+		pgm2.put("305", "0001101000000001");    // r2 = -r2
+
+		pgm2.put("306", "0001011000011101"); // SMR r2, m29  // r2 = r2 - min
+		pgm2.put("307", "0000011100011111"); // load r3 with m31
+		pgm2.put("308", "0001101100001010"); // AIR r3 10 -> r3 = 316
+		pgm2.put("309", "0000101100011111"); // store r3=316 to m31
+		pgm2.put("310", "0100011000111111"); // JGE r2, m31 // if r2 >=0: jump to 316
+		// if r2 < 0:
+		pgm2.put("311", "0111110110001111");  // reset r1
+		pgm2.put("312", "0001001000011101");  // AMR r2 m29
+		pgm2.put("313", "0000101000011101");  // STR r2 m29
+		pgm2.put("314", "0000010100111110");  // LDR r1 m(m30)
+		pgm2.put("315", "0000100100000110"); // store the r1 (result) in m(6)
+		// (1)
+		pgm2.put("316", "0001100000000001");  // AIR r0 1
+		pgm2.put("317", "0000100000011110");  // STR r0 m(30)
+		pgm2.put("318", "0000010100011110");  // LDR r1 m(30)
+		pgm2.put("319", "0001110100011011");  // SIR r1 27
+		pgm2.put("320", "0001101100010100"); // AIR r3 20 -> r3 = 336
+		pgm2.put("321", "0000101100011111"); // store r3=336 to m31
+		pgm2.put("322", "0100010100111111");  // JGE r1, m31
+		pgm2.put("323", "0001111100011110");  // SIR r3 30 -> r3 = 306
+		pgm2.put("324", "0000101100011111");  // store r3=306 to m31
+		pgm2.put("325", "0011010000111100");  // JMA m28
+		// (2)
+		pgm2.put("336", "0111111110001111");  // reset r3
+		pgm2.put("337", "0001101100001010");  // AIR r3 10
+		pgm2.put("338", "1111101100000001");  // OUT r3
+		pgm2.put("339", "0111111110001111");  // reset r3
+		pgm2.put("340", "0000011100000110");  // LDR r3 m6
+		pgm2.put("341", "0000101100011110");  // STR r3 30
 	}
+	
+	public static HashMap<String, String> pgm3 = new HashMap<>();
+	static {
+		pgm3.put("31",   "0000011100010001"); // start of the block (0)
+		// m(30) store the number that you want to print
+		pgm3.put("6",    "0000000000110010"); // store every digit of the numbers starting from m(50)
+		// program begins
+		pgm3.put("1800", "0111110110001111"); // reset r1
+		pgm3.put("1801", "0001100100001010"); // AIR r1, 10
+		pgm3.put("1802", "0000100100100110"); // store r1 into location of content of m(6)
+		pgm3.put("1803", "0000111100100110"); // load r3 with content of m(6)
+		pgm3.put("1804", "0001101100000001"); // AIR r3, 1
+		pgm3.put("1805", "0000101100000110"); // store r3 into m(6)   // m6 += 1
+		pgm3.put("1806", "0111111010001111"); // reset r2
+		pgm3.put("1807", "0001101000001010"); // AIR r2, 10
+		pgm3.put("1808", "0000110000111110"); // load r0 with content of m(30)
+		// (0)
+		pgm3.put("1809", "0101010010000000"); // DVD r0, r2
+		pgm3.put("1810", "0000111100111111");// load r3 with content of m(31)
+		pgm3.put("1811", "0001101100010100");// AIR r3, 20
+		pgm3.put("1812", "0000101100011111");// store r3 into m(31)
+		pgm3.put("1813", "0010100000111111");// JZ r0, content of m(31), means if r0 == 0 jump to (1)
+		pgm3.put("1814", "0001100100011000");// r1 + 48, convert to ascii
+		pgm3.put("1815", "0001100100011000");
+		pgm3.put("1816", "0000100100100110");// store r1 into location of content of m(6)
+		pgm3.put("1817", "0000111100100110");// load r3 with content of m(6)
+		pgm3.put("1818", "0001101100000001");// AIR r3, 1
+		pgm3.put("1819", "0000101100000110");// store r3 into m(6)
+		pgm3.put("1820", "0000111100111111");// load r3 with content of m(31)
+		pgm3.put("1821", "0001111100010100");// SIR r3, 20
+		pgm3.put("1822", "0000101100011111");// store r3 into m(31)
+		pgm3.put("1823", "0011010000111111");// JMA, content of m(31), means jump to (0)
 
+		// (1) r0 == 0, means has reach the highest digit of the number
+		pgm3.put("1829", "0001100100011000");// r1 + 48, convert to ascii
+		pgm3.put("1830", "0001100100011000");
+		pgm3.put("1831", "0000100100100110");// store r1 into location of content of m(6)
+		pgm3.put("1832", "0000111100111111");// load r3 with content of m(31)
+		pgm3.put("1833", "0001101100010100");// AIR r3, 20
+		pgm3.put("1834", "0000101100011111");// store r3 into m(31)
+		pgm3.put("1835", "0111111010001111");// reset r2
+		pgm3.put("1836", "0001101000001010");// AIR r2, 10 (new line sign, use to compare)
+		pgm3.put("1837", "0011010000111111");// JMA, content of m(31), means jump to (2)
 
+		// (2) print the digit one by one
+		pgm3.put("1849", "0000010100100110");// load r1 with address of content of m(6)
+		pgm3.put("1850", "1111100100000001");// print r1 to console
+		pgm3.put("1851", "0000111100111111");// load r3 with content of m(31)
+		pgm3.put("1852", "0001101100010100");// AIR r3, 20
+		pgm3.put("1853", "0000101100011111");// store r3 into m(31)
+		pgm3.put("1854", "0101100110000000");// TRR r1, r2
+		pgm3.put("1855", "0011001100111111");// JCC cc(3), content of m(31), mean jump to (3)
+		pgm3.put("1856", "0000111100100110");// load r3 with content of m(6)
+		pgm3.put("1857", "0001111100000001");// SIR r3, 1
+		pgm3.put("1858", "0000101100000110");// store r3 into m(6)
+		pgm3.put("1859", "0000111100111111");// load r3 with content of m(31)
+		pgm3.put("1860", "0001111100010100");// SIR r3, 20
+		pgm3.put("1861", "0000101100011111");// store r3 into m(31)
+		pgm3.put("1862", "0011010000111111");// JMA, content of m(31), means jump to (2)
+
+		// (3) finish printing the numbers
+		pgm3.put("1869", "0000000000000000"); // HLT
+	}
 }
