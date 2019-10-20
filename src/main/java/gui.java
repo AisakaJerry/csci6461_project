@@ -306,7 +306,7 @@ public class gui extends javax.swing.JFrame {
 		jButtonSingleRun.setBounds(new Rectangle(new Point(475, 710), jButtonSingleRun.getPreferredSize()));
 
 		//---- jButtonIPL ----
-		jButtonIPL.setText("IPL");
+		jButtonIPL.setText("IPL/RESET");
 		jButtonIPL.addActionListener(e -> jButtonIPLActionPerformed(e));
 		contentPane.add(jButtonIPL);
 		jButtonIPL.setBounds(new Rectangle(new Point(360, 710), jButtonIPL.getPreferredSize()));
@@ -387,7 +387,7 @@ public class gui extends javax.swing.JFrame {
 		buttonStore.setBounds(new Rectangle(new Point(865, 595), buttonStore.getPreferredSize()));
 
 		//---- pg1Read ----
-		pg1Read.setText("Read 20 numbers");
+		pg1Read.setText("Read 21 numbers");
 		pg1Read.addActionListener(e -> pg1ReadActionPerformed(e));
 		contentPane.add(pg1Read);
 		pg1Read.setBounds(new Rectangle(new Point(515, 440), pg1Read.getPreferredSize()));
@@ -633,10 +633,10 @@ public class gui extends javax.swing.JFrame {
 				Simulator.execInst(Simulator.memory[Simulator.bToD(Simulator.pc)]);  // execute the instruction on PC address in memory
 			} while (Simulator.bToD(Simulator.pc) >= 298 && Simulator.bToD(Simulator.pc) <= 341);
 			Simulator.loadProgram(prog1.pgm3);  // load the print program into memory
-			Simulator.pc = Simulator.ext212(Simulator.dToB(1800));  // the start mem position of print part
+			Simulator.pc = Simulator.ext212(Simulator.dToB(500));  // the start mem position of print part
 			do {
 				Simulator.execInst(Simulator.memory[Simulator.bToD(Simulator.pc)]);  // execute the instruction on PC address in memory
-			} while (Simulator.bToD(Simulator.pc) >= 1800 && Simulator.bToD(Simulator.pc) <= 1869);
+			} while (Simulator.bToD(Simulator.pc) >= 500 && Simulator.bToD(Simulator.pc) <= 569);
 			prog1Flag = false;
 		}
 	}
@@ -730,7 +730,7 @@ public class gui extends javax.swing.JFrame {
 	private JButton jButtonMBR;
 	private JButton jButtonMAR;
 	private JLabel jLabelR3;
-	private JTextField jTextFieldPC;
+	public static JTextField jTextFieldPC;
 	private JLabel LabelPC;
 	private JLabel LabelR0;
 	private JLabel LabelR1;

@@ -329,7 +329,7 @@ new FormModel {
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "jButtonIPL"
-				"text": "IPL"
+				"text": "IPL/RESET"
 				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "jButtonIPLActionPerformed", true ) )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 				"x": 360
@@ -476,7 +476,7 @@ new FormModel {
 			} )
 			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "pg1Read"
-				"text": "Read 20 numbers"
+				"text": "Read 21 numbers"
 				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "pg1ReadActionPerformed", true ) )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
 				"x": 515
