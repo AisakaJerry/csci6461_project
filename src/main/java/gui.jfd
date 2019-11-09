@@ -529,6 +529,29 @@ new FormModel {
 				"width": 455
 				"height": 260
 			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label5"
+				"text": "program 2"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"x": 540
+				"y": 520
+				"width": 80
+				"height": 31
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "pg2Read"
+				"text": "Read 6 sentences"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"x": 520
+				"y": 555
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "pg2Find"
+				"text": "find word"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.NullConstraints ) {
+				"x": 540
+				"y": 585
+			} )
 		}, new FormLayoutConstraints( null ) {
 			"size": new java.awt.Dimension( 986, 775 )
 			"location": new java.awt.Point( 0, 0 )

@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import javax.swing.*;
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -11,9 +12,10 @@ import javax.swing.*;
  *
  * @author pranaypatodi
  */
-public class gui extends javax.swing.JFrame {
+public class gui extends JFrame {
 
 	private boolean prog1Flag = false;
+	private boolean prog2Flag = false;
 	private void jTextFieldInputAdressActionPerformed(ActionEvent e) {
 		// TODO add your code here
 	}
@@ -39,405 +41,425 @@ public class gui extends javax.swing.JFrame {
 	 */
 	@SuppressWarnings("unchecked")
 	// <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-	// Generated using JFormDesigner Evaluation license - unknown
-	private void initComponents() {
-		LabelMAR = new JLabel();
-		LabelMBR = new JLabel();
-		jTextFieldR1 = new JTextField();
-		jTextFieldMBR = new JTextField();
-		jLabel3 = new JLabel();
-		jButtonR0 = new JButton();
-		jButtonR1 = new JButton();
-		jButtonR2 = new JButton();
-		jButtonR3 = new JButton();
-		jButtonX2 = new JButton();
-		jButtonX3 = new JButton();
-		jButtonX1 = new JButton();
-		jLabel4 = new JLabel();
-		jLabel5 = new JLabel();
-		jButtonInputWrite = new JButton();
-		jSeparator1 = new JSeparator();
-		jSeparator2 = new JSeparator();
-		jTextFieldMAR = new JTextField();
-		jTextFieldR0 = new JTextField();
-		jTextFieldR3 = new JTextField();
-		jTextFieldR2 = new JTextField();
-		jTextFieldX3 = new JTextField();
-		jTextFieldX2 = new JTextField();
-		jTextFieldX1 = new JTextField();
-		jButtonMBR = new JButton();
-		jButtonMAR = new JButton();
-		jLabelR3 = new JLabel();
-		jTextFieldPC = new JTextField();
-		LabelPC = new JLabel();
-		LabelR0 = new JLabel();
-		LabelR1 = new JLabel();
-		jLabelR2 = new JLabel();
-		jLabelX3 = new JLabel();
-		jLabelX1 = new JLabel();
-		jLabelX2 = new JLabel();
-		jLabel14 = new JLabel();
-		jSeparator3 = new JSeparator();
-		jTextFieldInputValue = new JTextField();
-		jSeparator4 = new JSeparator();
-		jButtonSingleRun = new JButton();
-		jButtonIPL = new JButton();
-		jSeparator5 = new JSeparator();
-		jLabel15 = new JLabel();
-		jSeparator6 = new JSeparator();
-		jTextFieldMFR = new JTextField();
-		jTextFieldCC = new JTextField();
-		jTextFieldIR = new JTextField();
-		jLabelMFR = new JLabel();
-		jLabelIR = new JLabel();
-		jLabelCC = new JLabel();
-		jTextFieldMSR = new JTextField();
-		jLabelMSR = new JLabel();
-		memoryValueTextField = new JTextField();
-		buttonLoad = new JButton();
-		memoryAddressTextField = new JTextField();
-		label1 = new JLabel();
-		label2 = new JLabel();
-		buttonStore = new JButton();
-		pg1Read = new JButton();
-		pg1Find = new JButton();
-		label3 = new JLabel();
-		label4 = new JLabel();
-		scrollPane1 = new JScrollPane();
-		consoleKeyboard = new JTextArea();
-		scrollPane2 = new JScrollPane();
-		displayPanel = new JTextArea();
+    // Generated using JFormDesigner Evaluation license - zhen wang
+    private void initComponents() {
+        LabelMAR = new JLabel();
+        LabelMBR = new JLabel();
+        jTextFieldR1 = new JTextField();
+        jTextFieldMBR = new JTextField();
+        jLabel3 = new JLabel();
+        jButtonR0 = new JButton();
+        jButtonR1 = new JButton();
+        jButtonR2 = new JButton();
+        jButtonR3 = new JButton();
+        jButtonX2 = new JButton();
+        jButtonX3 = new JButton();
+        jButtonX1 = new JButton();
+        jLabel4 = new JLabel();
+        jLabel5 = new JLabel();
+        jButtonInputWrite = new JButton();
+        jSeparator1 = new JSeparator();
+        jSeparator2 = new JSeparator();
+        jTextFieldMAR = new JTextField();
+        jTextFieldR0 = new JTextField();
+        jTextFieldR3 = new JTextField();
+        jTextFieldR2 = new JTextField();
+        jTextFieldX3 = new JTextField();
+        jTextFieldX2 = new JTextField();
+        jTextFieldX1 = new JTextField();
+        jButtonMBR = new JButton();
+        jButtonMAR = new JButton();
+        jLabelR3 = new JLabel();
+        jTextFieldPC = new JTextField();
+        LabelPC = new JLabel();
+        LabelR0 = new JLabel();
+        LabelR1 = new JLabel();
+        jLabelR2 = new JLabel();
+        jLabelX3 = new JLabel();
+        jLabelX1 = new JLabel();
+        jLabelX2 = new JLabel();
+        jLabel14 = new JLabel();
+        jSeparator3 = new JSeparator();
+        jTextFieldInputValue = new JTextField();
+        jSeparator4 = new JSeparator();
+        jButtonSingleRun = new JButton();
+        jButtonIPL = new JButton();
+        jSeparator5 = new JSeparator();
+        jLabel15 = new JLabel();
+        jSeparator6 = new JSeparator();
+        jTextFieldMFR = new JTextField();
+        jTextFieldCC = new JTextField();
+        jTextFieldIR = new JTextField();
+        jLabelMFR = new JLabel();
+        jLabelIR = new JLabel();
+        jLabelCC = new JLabel();
+        jTextFieldMSR = new JTextField();
+        jLabelMSR = new JLabel();
+        memoryValueTextField = new JTextField();
+        buttonLoad = new JButton();
+        memoryAddressTextField = new JTextField();
+        label1 = new JLabel();
+        label2 = new JLabel();
+        buttonStore = new JButton();
+        pg1Read = new JButton();
+        pg1Find = new JButton();
+        label3 = new JLabel();
+        label4 = new JLabel();
+        scrollPane1 = new JScrollPane();
+        consoleKeyboard = new JTextArea();
+        scrollPane2 = new JScrollPane();
+        displayPanel = new JTextArea();
+        label5 = new JLabel();
+        pg2Read = new JButton();
+        pg2Find = new JButton();
 
-		//======== this ========
-		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		var contentPane = getContentPane();
-		contentPane.setLayout(null);
+        //======== this ========
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        var contentPane = getContentPane();
+        contentPane.setLayout(null);
 
-		//---- LabelMAR ----
-		LabelMAR.setText("MAR");
-		contentPane.add(LabelMAR);
-		LabelMAR.setBounds(20, 30, 230, 30);
+        //---- LabelMAR ----
+        LabelMAR.setText("MAR");
+        contentPane.add(LabelMAR);
+        LabelMAR.setBounds(20, 30, 230, 30);
 
-		//---- LabelMBR ----
-		LabelMBR.setText("MBR");
-		contentPane.add(LabelMBR);
-		LabelMBR.setBounds(20, 60, 220, 30);
+        //---- LabelMBR ----
+        LabelMBR.setText("MBR");
+        contentPane.add(LabelMBR);
+        LabelMBR.setBounds(20, 60, 220, 30);
 
-		//---- jTextFieldR1 ----
-		jTextFieldR1.addActionListener(e -> jTextFieldR1ActionPerformed(e));
-		contentPane.add(jTextFieldR1);
-		jTextFieldR1.setBounds(60, 200, 320, jTextFieldR1.getPreferredSize().height);
-		contentPane.add(jTextFieldMBR);
-		jTextFieldMBR.setBounds(60, 60, 320, jTextFieldMBR.getPreferredSize().height);
+        //---- jTextFieldR1 ----
+        jTextFieldR1.addActionListener(e -> jTextFieldR1ActionPerformed(e));
+        contentPane.add(jTextFieldR1);
+        jTextFieldR1.setBounds(60, 200, 320, jTextFieldR1.getPreferredSize().height);
+        contentPane.add(jTextFieldMBR);
+        jTextFieldMBR.setBounds(60, 60, 320, jTextFieldMBR.getPreferredSize().height);
 
-		//---- jLabel3 ----
-		jLabel3.setText("Display Panel");
-		contentPane.add(jLabel3);
-		jLabel3.setBounds(new Rectangle(new Point(690, 10), jLabel3.getPreferredSize()));
+        //---- jLabel3 ----
+        jLabel3.setText("Display Panel");
+        contentPane.add(jLabel3);
+        jLabel3.setBounds(new Rectangle(new Point(690, 10), jLabel3.getPreferredSize()));
 
-		//---- jButtonR0 ----
-		jButtonR0.setText("Write");
-		jButtonR0.addActionListener(e -> jButtonR0ActionPerformed(e));
-		contentPane.add(jButtonR0);
-		jButtonR0.setBounds(new Rectangle(new Point(380, 160), jButtonR0.getPreferredSize()));
+        //---- jButtonR0 ----
+        jButtonR0.setText("Write");
+        jButtonR0.addActionListener(e -> jButtonR0ActionPerformed(e));
+        contentPane.add(jButtonR0);
+        jButtonR0.setBounds(new Rectangle(new Point(380, 160), jButtonR0.getPreferredSize()));
 
-		//---- jButtonR1 ----
-		jButtonR1.setText("Write");
-		jButtonR1.addActionListener(e -> jButtonR1ActionPerformed(e));
-		contentPane.add(jButtonR1);
-		jButtonR1.setBounds(new Rectangle(new Point(380, 200), jButtonR1.getPreferredSize()));
+        //---- jButtonR1 ----
+        jButtonR1.setText("Write");
+        jButtonR1.addActionListener(e -> jButtonR1ActionPerformed(e));
+        contentPane.add(jButtonR1);
+        jButtonR1.setBounds(new Rectangle(new Point(380, 200), jButtonR1.getPreferredSize()));
 
-		//---- jButtonR2 ----
-		jButtonR2.setText("Write");
-		jButtonR2.addActionListener(e -> jButtonR2ActionPerformed(e));
-		contentPane.add(jButtonR2);
-		jButtonR2.setBounds(new Rectangle(new Point(380, 240), jButtonR2.getPreferredSize()));
+        //---- jButtonR2 ----
+        jButtonR2.setText("Write");
+        jButtonR2.addActionListener(e -> jButtonR2ActionPerformed(e));
+        contentPane.add(jButtonR2);
+        jButtonR2.setBounds(new Rectangle(new Point(380, 240), jButtonR2.getPreferredSize()));
 
-		//---- jButtonR3 ----
-		jButtonR3.setText("Write");
-		jButtonR3.addActionListener(e -> jButtonR3ActionPerformed(e));
-		contentPane.add(jButtonR3);
-		jButtonR3.setBounds(new Rectangle(new Point(380, 280), jButtonR3.getPreferredSize()));
+        //---- jButtonR3 ----
+        jButtonR3.setText("Write");
+        jButtonR3.addActionListener(e -> jButtonR3ActionPerformed(e));
+        contentPane.add(jButtonR3);
+        jButtonR3.setBounds(new Rectangle(new Point(380, 280), jButtonR3.getPreferredSize()));
 
-		//---- jButtonX2 ----
-		jButtonX2.setText("Write");
-		jButtonX2.addActionListener(e -> jButtonX2ActionPerformed(e));
-		contentPane.add(jButtonX2);
-		jButtonX2.setBounds(new Rectangle(new Point(380, 390), jButtonX2.getPreferredSize()));
+        //---- jButtonX2 ----
+        jButtonX2.setText("Write");
+        jButtonX2.addActionListener(e -> jButtonX2ActionPerformed(e));
+        contentPane.add(jButtonX2);
+        jButtonX2.setBounds(new Rectangle(new Point(380, 390), jButtonX2.getPreferredSize()));
 
-		//---- jButtonX3 ----
-		jButtonX3.setText("Write");
-		jButtonX3.addActionListener(e -> jButtonX3ActionPerformed(e));
-		contentPane.add(jButtonX3);
-		jButtonX3.setBounds(new Rectangle(new Point(380, 430), jButtonX3.getPreferredSize()));
+        //---- jButtonX3 ----
+        jButtonX3.setText("Write");
+        jButtonX3.addActionListener(e -> jButtonX3ActionPerformed(e));
+        contentPane.add(jButtonX3);
+        jButtonX3.setBounds(new Rectangle(new Point(380, 430), jButtonX3.getPreferredSize()));
 
-		//---- jButtonX1 ----
-		jButtonX1.setText("Write");
-		jButtonX1.addActionListener(e -> jButtonX1ActionPerformed(e));
-		contentPane.add(jButtonX1);
-		jButtonX1.setBounds(new Rectangle(new Point(380, 350), jButtonX1.getPreferredSize()));
+        //---- jButtonX1 ----
+        jButtonX1.setText("Write");
+        jButtonX1.addActionListener(e -> jButtonX1ActionPerformed(e));
+        contentPane.add(jButtonX1);
+        jButtonX1.setBounds(new Rectangle(new Point(380, 350), jButtonX1.getPreferredSize()));
 
-		//---- jLabel4 ----
-		jLabel4.setText("General Purpose Registers");
-		contentPane.add(jLabel4);
-		jLabel4.setBounds(new Rectangle(new Point(20, 130), jLabel4.getPreferredSize()));
+        //---- jLabel4 ----
+        jLabel4.setText("General Purpose Registers");
+        contentPane.add(jLabel4);
+        jLabel4.setBounds(new Rectangle(new Point(20, 130), jLabel4.getPreferredSize()));
 
-		//---- jLabel5 ----
-		jLabel5.setText("Instruction Registers");
-		contentPane.add(jLabel5);
-		jLabel5.setBounds(new Rectangle(new Point(20, 320), jLabel5.getPreferredSize()));
+        //---- jLabel5 ----
+        jLabel5.setText("Instruction Registers");
+        contentPane.add(jLabel5);
+        jLabel5.setBounds(new Rectangle(new Point(20, 320), jLabel5.getPreferredSize()));
 
-		//---- jButtonInputWrite ----
-		jButtonInputWrite.setText("Add to Instruction Queue");
-		contentPane.add(jButtonInputWrite);
-		jButtonInputWrite.setBounds(new Rectangle(new Point(465, 670), jButtonInputWrite.getPreferredSize()));
-		contentPane.add(jSeparator1);
-		jSeparator1.setBounds(new Rectangle(new Point(360, 130), jSeparator1.getPreferredSize()));
-		contentPane.add(jSeparator2);
-		jSeparator2.setBounds(10, 120, 440, 10);
+        //---- jButtonInputWrite ----
+        jButtonInputWrite.setText("Add to Instruction Queue");
+        contentPane.add(jButtonInputWrite);
+        jButtonInputWrite.setBounds(new Rectangle(new Point(465, 670), jButtonInputWrite.getPreferredSize()));
+        contentPane.add(jSeparator1);
+        jSeparator1.setBounds(new Rectangle(new Point(360, 130), jSeparator1.getPreferredSize()));
+        contentPane.add(jSeparator2);
+        jSeparator2.setBounds(10, 120, 440, 10);
 
-		//---- jTextFieldMAR ----
-		jTextFieldMAR.addActionListener(e -> jTextFieldMARActionPerformed(e));
-		contentPane.add(jTextFieldMAR);
-		jTextFieldMAR.setBounds(60, 30, 320, jTextFieldMAR.getPreferredSize().height);
+        //---- jTextFieldMAR ----
+        jTextFieldMAR.addActionListener(e -> jTextFieldMARActionPerformed(e));
+        contentPane.add(jTextFieldMAR);
+        jTextFieldMAR.setBounds(60, 30, 320, jTextFieldMAR.getPreferredSize().height);
 
-		//---- jTextFieldR0 ----
-		jTextFieldR0.addActionListener(e -> jTextFieldR0ActionPerformed(e));
-		contentPane.add(jTextFieldR0);
-		jTextFieldR0.setBounds(60, 160, 320, jTextFieldR0.getPreferredSize().height);
+        //---- jTextFieldR0 ----
+        jTextFieldR0.addActionListener(e -> jTextFieldR0ActionPerformed(e));
+        contentPane.add(jTextFieldR0);
+        jTextFieldR0.setBounds(60, 160, 320, jTextFieldR0.getPreferredSize().height);
 
-		//---- jTextFieldR3 ----
-		jTextFieldR3.addActionListener(e -> jTextFieldR3ActionPerformed(e));
-		contentPane.add(jTextFieldR3);
-		jTextFieldR3.setBounds(60, 280, 320, jTextFieldR3.getPreferredSize().height);
+        //---- jTextFieldR3 ----
+        jTextFieldR3.addActionListener(e -> jTextFieldR3ActionPerformed(e));
+        contentPane.add(jTextFieldR3);
+        jTextFieldR3.setBounds(60, 280, 320, jTextFieldR3.getPreferredSize().height);
 
-		//---- jTextFieldR2 ----
-		jTextFieldR2.addActionListener(e -> jTextFieldR2ActionPerformed(e));
-		contentPane.add(jTextFieldR2);
-		jTextFieldR2.setBounds(60, 240, 320, jTextFieldR2.getPreferredSize().height);
+        //---- jTextFieldR2 ----
+        jTextFieldR2.addActionListener(e -> jTextFieldR2ActionPerformed(e));
+        contentPane.add(jTextFieldR2);
+        jTextFieldR2.setBounds(60, 240, 320, jTextFieldR2.getPreferredSize().height);
 
-		//---- jTextFieldX3 ----
-		jTextFieldX3.addActionListener(e -> jTextFieldX3ActionPerformed(e));
-		contentPane.add(jTextFieldX3);
-		jTextFieldX3.setBounds(60, 430, 320, jTextFieldX3.getPreferredSize().height);
+        //---- jTextFieldX3 ----
+        jTextFieldX3.addActionListener(e -> jTextFieldX3ActionPerformed(e));
+        contentPane.add(jTextFieldX3);
+        jTextFieldX3.setBounds(60, 430, 320, jTextFieldX3.getPreferredSize().height);
 
-		//---- jTextFieldX2 ----
-		jTextFieldX2.addActionListener(e -> jTextFieldX2ActionPerformed(e));
-		contentPane.add(jTextFieldX2);
-		jTextFieldX2.setBounds(60, 390, 320, jTextFieldX2.getPreferredSize().height);
+        //---- jTextFieldX2 ----
+        jTextFieldX2.addActionListener(e -> jTextFieldX2ActionPerformed(e));
+        contentPane.add(jTextFieldX2);
+        jTextFieldX2.setBounds(60, 390, 320, jTextFieldX2.getPreferredSize().height);
 
-		//---- jTextFieldX1 ----
-		jTextFieldX1.addActionListener(e -> jTextFieldX1ActionPerformed(e));
-		contentPane.add(jTextFieldX1);
-		jTextFieldX1.setBounds(60, 350, 320, jTextFieldX1.getPreferredSize().height);
+        //---- jTextFieldX1 ----
+        jTextFieldX1.addActionListener(e -> jTextFieldX1ActionPerformed(e));
+        contentPane.add(jTextFieldX1);
+        jTextFieldX1.setBounds(60, 350, 320, jTextFieldX1.getPreferredSize().height);
 
-		//---- jButtonMBR ----
-		jButtonMBR.setText("Write");
-		jButtonMBR.addActionListener(e -> jButtonMBRActionPerformed(e));
-		contentPane.add(jButtonMBR);
-		jButtonMBR.setBounds(new Rectangle(new Point(380, 60), jButtonMBR.getPreferredSize()));
+        //---- jButtonMBR ----
+        jButtonMBR.setText("Write");
+        jButtonMBR.addActionListener(e -> jButtonMBRActionPerformed(e));
+        contentPane.add(jButtonMBR);
+        jButtonMBR.setBounds(new Rectangle(new Point(380, 60), jButtonMBR.getPreferredSize()));
 
-		//---- jButtonMAR ----
-		jButtonMAR.setText("Write");
-		jButtonMAR.addActionListener(e -> jButtonMARActionPerformed(e));
-		contentPane.add(jButtonMAR);
-		jButtonMAR.setBounds(new Rectangle(new Point(380, 30), jButtonMAR.getPreferredSize()));
+        //---- jButtonMAR ----
+        jButtonMAR.setText("Write");
+        jButtonMAR.addActionListener(e -> jButtonMARActionPerformed(e));
+        contentPane.add(jButtonMAR);
+        jButtonMAR.setBounds(new Rectangle(new Point(380, 30), jButtonMAR.getPreferredSize()));
 
-		//---- jLabelR3 ----
-		jLabelR3.setText("R3");
-		contentPane.add(jLabelR3);
-		jLabelR3.setBounds(20, 280, 220, 30);
-		contentPane.add(jTextFieldPC);
-		jTextFieldPC.setBounds(60, 90, 320, jTextFieldPC.getPreferredSize().height);
+        //---- jLabelR3 ----
+        jLabelR3.setText("R3");
+        contentPane.add(jLabelR3);
+        jLabelR3.setBounds(20, 280, 220, 30);
+        contentPane.add(jTextFieldPC);
+        jTextFieldPC.setBounds(60, 90, 320, jTextFieldPC.getPreferredSize().height);
 
-		//---- LabelPC ----
-		LabelPC.setText("PC");
-		contentPane.add(LabelPC);
-		LabelPC.setBounds(20, 90, 220, 30);
+        //---- LabelPC ----
+        LabelPC.setText("PC");
+        contentPane.add(LabelPC);
+        LabelPC.setBounds(20, 90, 220, 30);
 
-		//---- LabelR0 ----
-		LabelR0.setText("R0");
-		contentPane.add(LabelR0);
-		LabelR0.setBounds(20, 160, 220, 30);
+        //---- LabelR0 ----
+        LabelR0.setText("R0");
+        contentPane.add(LabelR0);
+        LabelR0.setBounds(20, 160, 220, 30);
 
-		//---- LabelR1 ----
-		LabelR1.setText("R1");
-		contentPane.add(LabelR1);
-		LabelR1.setBounds(20, 200, 220, 30);
+        //---- LabelR1 ----
+        LabelR1.setText("R1");
+        contentPane.add(LabelR1);
+        LabelR1.setBounds(20, 200, 220, 30);
 
-		//---- jLabelR2 ----
-		jLabelR2.setText("R2");
-		contentPane.add(jLabelR2);
-		jLabelR2.setBounds(20, 240, 220, 30);
+        //---- jLabelR2 ----
+        jLabelR2.setText("R2");
+        contentPane.add(jLabelR2);
+        jLabelR2.setBounds(20, 240, 220, 30);
 
-		//---- jLabelX3 ----
-		jLabelX3.setText("X3");
-		contentPane.add(jLabelX3);
-		jLabelX3.setBounds(20, 430, 220, 30);
+        //---- jLabelX3 ----
+        jLabelX3.setText("X3");
+        contentPane.add(jLabelX3);
+        jLabelX3.setBounds(20, 430, 220, 30);
 
-		//---- jLabelX1 ----
-		jLabelX1.setText("X1");
-		contentPane.add(jLabelX1);
-		jLabelX1.setBounds(20, 350, 220, 30);
+        //---- jLabelX1 ----
+        jLabelX1.setText("X1");
+        contentPane.add(jLabelX1);
+        jLabelX1.setBounds(20, 350, 220, 30);
 
-		//---- jLabelX2 ----
-		jLabelX2.setText("X2");
-		contentPane.add(jLabelX2);
-		jLabelX2.setBounds(20, 390, 220, 30);
+        //---- jLabelX2 ----
+        jLabelX2.setText("X2");
+        contentPane.add(jLabelX2);
+        jLabelX2.setBounds(20, 390, 220, 30);
 
-		//---- jLabel14 ----
-		jLabel14.setText("Manually Instruction");
-		contentPane.add(jLabel14);
-		jLabel14.setBounds(new Rectangle(new Point(20, 650), jLabel14.getPreferredSize()));
-		contentPane.add(jSeparator3);
-		jSeparator3.setBounds(20, 700, 960, 10);
+        //---- jLabel14 ----
+        jLabel14.setText("Manually Instruction");
+        contentPane.add(jLabel14);
+        jLabel14.setBounds(new Rectangle(new Point(20, 650), jLabel14.getPreferredSize()));
+        contentPane.add(jSeparator3);
+        jSeparator3.setBounds(20, 700, 960, 10);
 
-		//---- jTextFieldInputValue ----
-		jTextFieldInputValue.addActionListener(e -> jTextFieldInputValueActionPerformed(e));
-		contentPane.add(jTextFieldInputValue);
-		jTextFieldInputValue.setBounds(20, 670, 420, jTextFieldInputValue.getPreferredSize().height);
-		contentPane.add(jSeparator4);
-		jSeparator4.setBounds(10, 630, 970, 10);
+        //---- jTextFieldInputValue ----
+        jTextFieldInputValue.addActionListener(e -> jTextFieldInputValueActionPerformed(e));
+        contentPane.add(jTextFieldInputValue);
+        jTextFieldInputValue.setBounds(20, 670, 420, jTextFieldInputValue.getPreferredSize().height);
+        contentPane.add(jSeparator4);
+        jSeparator4.setBounds(10, 630, 970, 10);
 
-		//---- jButtonSingleRun ----
-		jButtonSingleRun.setText("Single Run");
-		jButtonSingleRun.addActionListener(e -> jButtonSingleRunActionPerformed(e));
-		contentPane.add(jButtonSingleRun);
-		jButtonSingleRun.setBounds(new Rectangle(new Point(475, 710), jButtonSingleRun.getPreferredSize()));
+        //---- jButtonSingleRun ----
+        jButtonSingleRun.setText("Single Run");
+        jButtonSingleRun.addActionListener(e -> jButtonSingleRunActionPerformed(e));
+        contentPane.add(jButtonSingleRun);
+        jButtonSingleRun.setBounds(new Rectangle(new Point(475, 710), jButtonSingleRun.getPreferredSize()));
 
-		//---- jButtonIPL ----
-		jButtonIPL.setText("IPL/RESET");
-		jButtonIPL.addActionListener(e -> jButtonIPLActionPerformed(e));
-		contentPane.add(jButtonIPL);
-		jButtonIPL.setBounds(new Rectangle(new Point(360, 710), jButtonIPL.getPreferredSize()));
-		contentPane.add(jSeparator5);
-		jSeparator5.setBounds(10, 460, 440, 10);
+        //---- jButtonIPL ----
+        jButtonIPL.setText("IPL/RESET");
+        jButtonIPL.addActionListener(e -> jButtonIPLActionPerformed(e));
+        contentPane.add(jButtonIPL);
+        jButtonIPL.setBounds(new Rectangle(new Point(360, 710), jButtonIPL.getPreferredSize()));
+        contentPane.add(jSeparator5);
+        jSeparator5.setBounds(10, 460, 440, 10);
 
-		//---- jLabel15 ----
-		jLabel15.setText("16 bit");
-		contentPane.add(jLabel15);
-		jLabel15.setBounds(new Rectangle(new Point(200, 10), jLabel15.getPreferredSize()));
-		contentPane.add(jSeparator6);
-		jSeparator6.setBounds(20, 310, 440, 10);
+        //---- jLabel15 ----
+        jLabel15.setText("16 bit");
+        contentPane.add(jLabel15);
+        jLabel15.setBounds(new Rectangle(new Point(200, 10), jLabel15.getPreferredSize()));
+        contentPane.add(jSeparator6);
+        jSeparator6.setBounds(20, 310, 440, 10);
 
-		//---- jTextFieldMFR ----
-		jTextFieldMFR.addActionListener(e -> jTextFieldMFRActionPerformed(e));
-		contentPane.add(jTextFieldMFR);
-		jTextFieldMFR.setBounds(60, 550, 390, jTextFieldMFR.getPreferredSize().height);
+        //---- jTextFieldMFR ----
+        jTextFieldMFR.addActionListener(e -> jTextFieldMFRActionPerformed(e));
+        contentPane.add(jTextFieldMFR);
+        jTextFieldMFR.setBounds(60, 550, 390, jTextFieldMFR.getPreferredSize().height);
 
-		//---- jTextFieldCC ----
-		jTextFieldCC.addActionListener(e -> jTextFieldCCActionPerformed(e));
-		contentPane.add(jTextFieldCC);
-		jTextFieldCC.setBounds(60, 510, 390, jTextFieldCC.getPreferredSize().height);
+        //---- jTextFieldCC ----
+        jTextFieldCC.addActionListener(e -> jTextFieldCCActionPerformed(e));
+        contentPane.add(jTextFieldCC);
+        jTextFieldCC.setBounds(60, 510, 390, jTextFieldCC.getPreferredSize().height);
 
-		//---- jTextFieldIR ----
-		jTextFieldIR.addActionListener(e -> jTextFieldIRActionPerformed(e));
-		contentPane.add(jTextFieldIR);
-		jTextFieldIR.setBounds(60, 470, 390, jTextFieldIR.getPreferredSize().height);
+        //---- jTextFieldIR ----
+        jTextFieldIR.addActionListener(e -> jTextFieldIRActionPerformed(e));
+        contentPane.add(jTextFieldIR);
+        jTextFieldIR.setBounds(60, 470, 390, jTextFieldIR.getPreferredSize().height);
 
-		//---- jLabelMFR ----
-		jLabelMFR.setText("MFR");
-		contentPane.add(jLabelMFR);
-		jLabelMFR.setBounds(20, 550, 290, 30);
+        //---- jLabelMFR ----
+        jLabelMFR.setText("MFR");
+        contentPane.add(jLabelMFR);
+        jLabelMFR.setBounds(20, 550, 290, 30);
 
-		//---- jLabelIR ----
-		jLabelIR.setText("IR");
-		contentPane.add(jLabelIR);
-		jLabelIR.setBounds(20, 470, 290, 30);
+        //---- jLabelIR ----
+        jLabelIR.setText("IR");
+        contentPane.add(jLabelIR);
+        jLabelIR.setBounds(20, 470, 290, 30);
 
-		//---- jLabelCC ----
-		jLabelCC.setText("CC");
-		contentPane.add(jLabelCC);
-		jLabelCC.setBounds(20, 510, 290, 30);
+        //---- jLabelCC ----
+        jLabelCC.setText("CC");
+        contentPane.add(jLabelCC);
+        jLabelCC.setBounds(20, 510, 290, 30);
 
-		//---- jTextFieldMSR ----
-		jTextFieldMSR.addActionListener(e -> jTextFieldMSRActionPerformed(e));
-		contentPane.add(jTextFieldMSR);
-		jTextFieldMSR.setBounds(60, 590, 390, jTextFieldMSR.getPreferredSize().height);
+        //---- jTextFieldMSR ----
+        jTextFieldMSR.addActionListener(e -> jTextFieldMSRActionPerformed(e));
+        contentPane.add(jTextFieldMSR);
+        jTextFieldMSR.setBounds(60, 590, 390, jTextFieldMSR.getPreferredSize().height);
 
-		//---- jLabelMSR ----
-		jLabelMSR.setText("MSR");
-		contentPane.add(jLabelMSR);
-		jLabelMSR.setBounds(20, 590, 290, 30);
-		contentPane.add(memoryValueTextField);
-		memoryValueTextField.setBounds(685, 555, 160, memoryValueTextField.getPreferredSize().height);
+        //---- jLabelMSR ----
+        jLabelMSR.setText("MSR");
+        contentPane.add(jLabelMSR);
+        jLabelMSR.setBounds(20, 590, 290, 30);
+        contentPane.add(memoryValueTextField);
+        memoryValueTextField.setBounds(685, 555, 160, memoryValueTextField.getPreferredSize().height);
 
-		//---- buttonLoad ----
-		buttonLoad.setText("Load");
-		buttonLoad.addActionListener(e -> buttonLoadActionPerformed(e));
-		contentPane.add(buttonLoad);
-		buttonLoad.setBounds(new Rectangle(new Point(735, 595), buttonLoad.getPreferredSize()));
-		contentPane.add(memoryAddressTextField);
-		memoryAddressTextField.setBounds(855, 555, 95, memoryAddressTextField.getPreferredSize().height);
+        //---- buttonLoad ----
+        buttonLoad.setText("Load");
+        buttonLoad.addActionListener(e -> buttonLoadActionPerformed(e));
+        contentPane.add(buttonLoad);
+        buttonLoad.setBounds(new Rectangle(new Point(735, 595), buttonLoad.getPreferredSize()));
+        contentPane.add(memoryAddressTextField);
+        memoryAddressTextField.setBounds(855, 555, 95, memoryAddressTextField.getPreferredSize().height);
 
-		//---- label1 ----
-		label1.setText("Memory Value");
-		contentPane.add(label1);
-		label1.setBounds(720, 530, 90, 21);
+        //---- label1 ----
+        label1.setText("Memory Value");
+        contentPane.add(label1);
+        label1.setBounds(720, 530, 90, 21);
 
-		//---- label2 ----
-		label2.setText("Memory Address");
-		contentPane.add(label2);
-		label2.setBounds(850, 525, 105, 26);
+        //---- label2 ----
+        label2.setText("Memory Address");
+        contentPane.add(label2);
+        label2.setBounds(850, 525, 105, 26);
 
-		//---- buttonStore ----
-		buttonStore.setText("Store");
-		buttonStore.addActionListener(e -> buttonStoreActionPerformed(e));
-		contentPane.add(buttonStore);
-		buttonStore.setBounds(new Rectangle(new Point(865, 595), buttonStore.getPreferredSize()));
+        //---- buttonStore ----
+        buttonStore.setText("Store");
+        buttonStore.addActionListener(e -> buttonStoreActionPerformed(e));
+        contentPane.add(buttonStore);
+        buttonStore.setBounds(new Rectangle(new Point(865, 595), buttonStore.getPreferredSize()));
 
-		//---- pg1Read ----
-		pg1Read.setText("Read 21 numbers");
-		pg1Read.addActionListener(e -> pg1ReadActionPerformed(e));
-		contentPane.add(pg1Read);
-		pg1Read.setBounds(new Rectangle(new Point(515, 440), pg1Read.getPreferredSize()));
+        //---- pg1Read ----
+        pg1Read.setText("Read 21 numbers");
+        pg1Read.addActionListener(e -> pg1ReadActionPerformed(e));
+        contentPane.add(pg1Read);
+        pg1Read.setBounds(new Rectangle(new Point(515, 440), pg1Read.getPreferredSize()));
 
-		//---- pg1Find ----
-		pg1Find.setText("find closest");
-		pg1Find.addActionListener(e -> pg1FindActionPerformed(e));
-		contentPane.add(pg1Find);
-		pg1Find.setBounds(515, 470, 120, pg1Find.getPreferredSize().height);
+        //---- pg1Find ----
+        pg1Find.setText("find closest");
+        pg1Find.addActionListener(e -> pg1FindActionPerformed(e));
+        contentPane.add(pg1Find);
+        pg1Find.setBounds(515, 470, 120, pg1Find.getPreferredSize().height);
 
-		//---- label3 ----
-		label3.setText("program 1");
-		contentPane.add(label3);
-		label3.setBounds(540, 405, 65, 26);
+        //---- label3 ----
+        label3.setText("program 1");
+        contentPane.add(label3);
+        label3.setBounds(540, 405, 65, 26);
 
-		//---- label4 ----
-		label4.setText("Console Keyboard");
-		contentPane.add(label4);
-		label4.setBounds(new Rectangle(new Point(765, 395), label4.getPreferredSize()));
+        //---- label4 ----
+        label4.setText("Console Keyboard");
+        contentPane.add(label4);
+        label4.setBounds(new Rectangle(new Point(765, 395), label4.getPreferredSize()));
 
-		//======== scrollPane1 ========
-		{
-			scrollPane1.setViewportView(consoleKeyboard);
-		}
-		contentPane.add(scrollPane1);
-		scrollPane1.setBounds(695, 420, 250, 100);
+        //======== scrollPane1 ========
+        {
+            scrollPane1.setViewportView(consoleKeyboard);
+        }
+        contentPane.add(scrollPane1);
+        scrollPane1.setBounds(695, 420, 250, 100);
 
-		//======== scrollPane2 ========
-		{
-			scrollPane2.setViewportView(displayPanel);
-		}
-		contentPane.add(scrollPane2);
-		scrollPane2.setBounds(490, 35, 455, 260);
+        //======== scrollPane2 ========
+        {
+            scrollPane2.setViewportView(displayPanel);
+        }
+        contentPane.add(scrollPane2);
+        scrollPane2.setBounds(490, 35, 455, 260);
 
-		{
-			// compute preferred size
-			Dimension preferredSize = new Dimension();
-			for(int i = 0; i < contentPane.getComponentCount(); i++) {
-				Rectangle bounds = contentPane.getComponent(i).getBounds();
-				preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
-				preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
-			}
-			Insets insets = contentPane.getInsets();
-			preferredSize.width += insets.right;
-			preferredSize.height += insets.bottom;
-			contentPane.setMinimumSize(preferredSize);
-			contentPane.setPreferredSize(preferredSize);
-		}
-		pack();
-		setLocationRelativeTo(getOwner());
+        //---- label5 ----
+        label5.setText("program 2");
+        contentPane.add(label5);
+        label5.setBounds(540, 520, 80, 31);
+
+        //---- pg2Read ----
+        pg2Read.setText("Read 6 sentences");
+        pg2Read.addActionListener(e -> pg2ReadActionPerformed(e));
+        contentPane.add(pg2Read);
+        pg2Read.setBounds(new Rectangle(new Point(520, 555), pg2Read.getPreferredSize()));
+
+        //---- pg2Find ----
+        pg2Find.setText("find word");
+        pg2Find.addActionListener(e -> pg2FindActionPerformed(e));
+        contentPane.add(pg2Find);
+        pg2Find.setBounds(new Rectangle(new Point(540, 585), pg2Find.getPreferredSize()));
+
+        {
+            // compute preferred size
+            Dimension preferredSize = new Dimension();
+            for(int i = 0; i < contentPane.getComponentCount(); i++) {
+                Rectangle bounds = contentPane.getComponent(i).getBounds();
+                preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
+                preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
+            }
+            Insets insets = contentPane.getInsets();
+            preferredSize.width += insets.right;
+            preferredSize.height += insets.bottom;
+            contentPane.setMinimumSize(preferredSize);
+            contentPane.setPreferredSize(preferredSize);
+        }
+        pack();
+        setLocationRelativeTo(getOwner());
 	}// </editor-fold>//GEN-END:initComponents
 
 	private void jTextFieldR1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldR1ActionPerformed
@@ -624,6 +646,7 @@ public class gui extends javax.swing.JFrame {
 	}
 
 	private void pg1FindActionPerformed(ActionEvent e) {
+
 		if (prog1Flag) {
 			System.out.println("Result:");
 			displayPanel.append("Result:");
@@ -639,6 +662,73 @@ public class gui extends javax.swing.JFrame {
 			} while (Simulator.bToD(Simulator.pc) >= 500 && Simulator.bToD(Simulator.pc) <= 569);
 			prog1Flag = false;
 		}
+
+	}
+
+	private void pg2ReadActionPerformed(ActionEvent e) {
+		if (!prog2Flag) {
+			System.out.println("Input 6 sentences: ");
+            displayPanel.append("program start!" + "\n");
+            prog2Flag = true;
+            Simulator.loadProgram(prog2.pgm1);  // load the store part of program 1 into memory
+
+            try {
+                consoleKeyboard.append(Simulator.readFileAsString("src\\paragraph.txt"));
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+
+            displayPanel.append("the paragraph is: ");
+            Simulator.loadProgram(prog2.pgm2);
+            Simulator.pc = Simulator.ext212(Simulator.dToB(1400));  // the start mem position of store part
+            do {
+                Simulator.execInst(Simulator.memory[Simulator.bToD(Simulator.pc)]);  // execute the instruction on PC address in memory
+                //System.out.println("1"+"\n");
+            } while (Simulator.bToD(Simulator.pc) >= 1400 && Simulator.bToD(Simulator.pc) <= 1424);
+
+            displayPanel.append("Please enter the word for searching in the console board.");
+
+		}
+	}
+
+	private void pg2FindActionPerformed(ActionEvent e) {
+	    if(prog2Flag) {
+            if (consoleKeyboard.getText() == null || consoleKeyboard.getText().length() == 0) {
+                JOptionPane.showMessageDialog(null, "Input one word you want to search in the console keyboard");
+            }
+            else {
+                displayPanel.append("\n"+"the word for searching is: ");
+                Simulator.loadProgram(prog2.pgm3);  // load the find part of program 1 into memory
+                Simulator.pc = Simulator.ext212(Simulator.dToB(1500));  // the start mem position of compare part
+                do {
+                    Simulator.execInst(Simulator.memory[Simulator.bToD(Simulator.pc)]);  // execute the instruction on PC address in memory
+                } while (Simulator.bToD(Simulator.pc) >= 1500 && Simulator.bToD(Simulator.pc) <= 1524);
+
+                displayPanel.append("\n" + "the word number is： ");
+                Simulator.loadProgram(prog2.pgm4);  // load the find part of program 1 into memory
+                Simulator.pc = Simulator.ext212(Simulator.dToB(900));  // the start mem position of compare part
+                do {
+                    Simulator.execInst(Simulator.memory[Simulator.bToD(Simulator.pc)]);  // execute the instruction on PC address in memory
+                } while (Simulator.bToD(Simulator.pc) >= 900 && Simulator.bToD(Simulator.pc) <= 989);
+                System.out.println("print the result in m(28)");
+
+                Simulator.loadProgram(prog2.pgm6);  // load the find part of program 1 into memory
+                Simulator.pc = Simulator.ext212(Simulator.dToB(1000));  // the start mem position of compare part
+                do {
+                    Simulator.execInst(Simulator.memory[Simulator.bToD(Simulator.pc)]);  // execute the instruction on PC address in memory
+                } while (Simulator.bToD(Simulator.pc) >= 1000 && Simulator.bToD(Simulator.pc) <= 1062);
+                System.out.println("print the result in m(29)");
+
+                displayPanel.append("the sentence number is: ");
+                Simulator.loadProgram(prog2.pgm5);  // load the find part of program 1 into memory
+                Simulator.pc = Simulator.ext212(Simulator.dToB(1100));  // the start mem position of compare part
+                do {
+                    Simulator.execInst(Simulator.memory[Simulator.bToD(Simulator.pc)]);  // execute the instruction on PC address in memory
+                } while (Simulator.bToD(Simulator.pc) >= 1100 && Simulator.bToD(Simulator.pc) <= 1162);
+                prog2Flag = false;
+            }
+
+        }
 	}
 
 
@@ -702,72 +792,75 @@ public class gui extends javax.swing.JFrame {
 	}
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
-	// Generated using JFormDesigner Evaluation license - unknown
-	private JLabel LabelMAR;
-	private JLabel LabelMBR;
-	public static JTextField jTextFieldR1;
-	public static JTextField jTextFieldMBR;
-	private JLabel jLabel3;
-	private JButton jButtonR0;
-	private JButton jButtonR1;
-	private JButton jButtonR2;
-	private JButton jButtonR3;
-	private JButton jButtonX2;
-	private JButton jButtonX3;
-	private JButton jButtonX1;
-	private JLabel jLabel4;
-	private JLabel jLabel5;
-	private JButton jButtonInputWrite;
-	private JSeparator jSeparator1;
-	private JSeparator jSeparator2;
-	public static JTextField jTextFieldMAR;
-	public static JTextField jTextFieldR0;
-	public static JTextField jTextFieldR3;
-	public static JTextField jTextFieldR2;
-	public static JTextField jTextFieldX3;
-	public static JTextField jTextFieldX2;
-	public static JTextField jTextFieldX1;
-	private JButton jButtonMBR;
-	private JButton jButtonMAR;
-	private JLabel jLabelR3;
-	public static JTextField jTextFieldPC;
-	private JLabel LabelPC;
-	private JLabel LabelR0;
-	private JLabel LabelR1;
-	private JLabel jLabelR2;
-	private JLabel jLabelX3;
-	private JLabel jLabelX1;
-	private JLabel jLabelX2;
-	private JLabel jLabel14;
-	private JSeparator jSeparator3;
-	private JTextField jTextFieldInputValue;
-	private JSeparator jSeparator4;
-	private JButton jButtonSingleRun;
-	private JButton jButtonIPL;
-	private JSeparator jSeparator5;
-	private JLabel jLabel15;
-	private JSeparator jSeparator6;
-	private JTextField jTextFieldMFR;
-	private JTextField jTextFieldCC;
-	private JTextField jTextFieldIR;
-	private JLabel jLabelMFR;
-	private JLabel jLabelIR;
-	private JLabel jLabelCC;
-	private JTextField jTextFieldMSR;
-	private JLabel jLabelMSR;
-	private JTextField memoryValueTextField;
-	private JButton buttonLoad;
-	private JTextField memoryAddressTextField;
-	private JLabel label1;
-	private JLabel label2;
-	private JButton buttonStore;
-	private JButton pg1Read;
-	private JButton pg1Find;
-	private JLabel label3;
-	private JLabel label4;
-	private JScrollPane scrollPane1;
-	public static JTextArea consoleKeyboard;
-	private JScrollPane scrollPane2;
-	public static JTextArea displayPanel;
+    // Generated using JFormDesigner Evaluation license - zhen wang
+    private JLabel LabelMAR;
+    private JLabel LabelMBR;
+    public static JTextField jTextFieldR1;
+    public static JTextField jTextFieldMBR;
+    private JLabel jLabel3;
+    private JButton jButtonR0;
+    private JButton jButtonR1;
+    private JButton jButtonR2;
+    private JButton jButtonR3;
+    private JButton jButtonX2;
+    private JButton jButtonX3;
+    private JButton jButtonX1;
+    private JLabel jLabel4;
+    private JLabel jLabel5;
+    private JButton jButtonInputWrite;
+    private JSeparator jSeparator1;
+    private JSeparator jSeparator2;
+    public static JTextField jTextFieldMAR;
+    public static JTextField jTextFieldR0;
+    public static JTextField jTextFieldR3;
+    public static JTextField jTextFieldR2;
+    public static JTextField jTextFieldX3;
+    public static JTextField jTextFieldX2;
+    public static JTextField jTextFieldX1;
+    private JButton jButtonMBR;
+    private JButton jButtonMAR;
+    private JLabel jLabelR3;
+    public static JTextField jTextFieldPC;
+    private JLabel LabelPC;
+    private JLabel LabelR0;
+    private JLabel LabelR1;
+    private JLabel jLabelR2;
+    private JLabel jLabelX3;
+    private JLabel jLabelX1;
+    private JLabel jLabelX2;
+    private JLabel jLabel14;
+    private JSeparator jSeparator3;
+    private JTextField jTextFieldInputValue;
+    private JSeparator jSeparator4;
+    private JButton jButtonSingleRun;
+    private JButton jButtonIPL;
+    private JSeparator jSeparator5;
+    private JLabel jLabel15;
+    private JSeparator jSeparator6;
+    public static JTextField jTextFieldMFR;
+    public static JTextField jTextFieldCC;
+    public static JTextField jTextFieldIR;
+    private JLabel jLabelMFR;
+    private JLabel jLabelIR;
+    private JLabel jLabelCC;
+    public static JTextField jTextFieldMSR;
+    private JLabel jLabelMSR;
+    private JTextField memoryValueTextField;
+    private JButton buttonLoad;
+    private JTextField memoryAddressTextField;
+    private JLabel label1;
+    private JLabel label2;
+    private JButton buttonStore;
+    private JButton pg1Read;
+    private JButton pg1Find;
+    private JLabel label3;
+    private JLabel label4;
+    private JScrollPane scrollPane1;
+    public static JTextArea consoleKeyboard;
+    private JScrollPane scrollPane2;
+    public static JTextArea displayPanel;
+    private JLabel label5;
+    private JButton pg2Read;
+    private JButton pg2Find;
 	// End of variables declaration//GEN-END:variables
 }

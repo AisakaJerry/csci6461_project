@@ -1,6 +1,9 @@
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class Simulator {
     /*Data structures for memory and registers*/
@@ -26,6 +29,7 @@ public class Simulator {
     public static int gprNumber;
     public static int indirect;
     public static int address;
+    public static int DevID;
     public static String IR;
     public static int AOrL;
     public static int LOrR;
@@ -139,6 +143,7 @@ public class Simulator {
 	    indirect = bToD(inst.substring(10, 11));
 	    address = bToD(inst.substring(11, 16));
 	    immed = inst.substring(11, 16);
+	    DevID = bToD(inst.substring(12, 16));
 	    System.out.println(inst);
 	    switch(opcode) {
 		    case InstType.LDR:
@@ -217,7 +222,7 @@ public class Simulator {
                 TRR(bToD(inst.substring(6, 8)), bToD(inst.substring(8, 10)), inst);
                 break;
             case InstType.IN:
-                IN(gprNumber, inst);
+                IN(DevID, gprNumber, inst);
                 break;
             case InstType.OUT:
                 OUT(gprNumber, inst);
@@ -236,6 +241,8 @@ public class Simulator {
                 pc = ext212(dToB(temp));
             }
         }
+        gui.jTextFieldR0.setText(gpr[0]);
+	    /*
 	    gui.jTextFieldR0.setText(gpr[0]);
         gui.jTextFieldR1.setText(gpr[1]);
         gui.jTextFieldR2.setText(gpr[2]);
@@ -245,6 +252,7 @@ public class Simulator {
         gui.jTextFieldX3.setText(indexRegister[2]);
         gui.jTextFieldMAR.setText(mar);
         gui.jTextFieldMBR.setText(mbr);
+	     */
     }
 
     /*initialize value in some memory address for IPL program*/
@@ -625,12 +633,44 @@ public class Simulator {
         }
     }
 
-    public static void IN(int gprNum, String ins) {
-        String val = gui.consoleKeyboard.getText();
-        char chr = val.charAt(0);
-        gpr[gprNum] = ext216(dToB((int)chr));
-        String newVal = val.substring(1);
-        gui.consoleKeyboard.setText(newVal);
+    public static void IN(int DevId, int gprNum, String ins){
+        if(DevId == 0) {
+            String val = gui.consoleKeyboard.getText();
+            if(val.length() != 0){
+                char chr = val.charAt(0);
+                gpr[gprNum] = ext216(dToB((int) chr));
+                String newVal = val.substring(1);
+                gui.consoleKeyboard.setText(newVal);
+            }
+            else{
+                gpr[gprNum] = ext216("0");
+            }
+
+
+        }
+        /*
+        if(DevId == 2) {
+            String val = gui.textArea1.getText();
+            char chr = val.charAt(0);
+            gpr[gprNum] = ext216(dToB((int) chr));
+            String newVal = val.substring(1);
+            gui.textArea1.setText(newVal);
+        }
+*/
+
+        if(DevId == 2) {
+            String val = gui.consoleKeyboard.getText();
+            if(val.length() != 0) {
+                char chr = val.charAt(0);
+                gpr[gprNum] = ext216(dToB((int) chr));
+                String newVal = val.substring(1);
+                gui.consoleKeyboard.setText(newVal);
+            }
+            else{
+                gpr[gprNum] = ext216("0");
+            }
+
+        }
     }
 
     public static void OUT(int gprNum, String ins) {
@@ -719,6 +759,21 @@ public class Simulator {
                 memory[addr] = value;
             }
         }
+    }
+
+    public static String readFileAsString(String fileName) throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader(fileName));
+        StringBuilder sb = new StringBuilder();
+        String line = br.readLine();
+        while (line != null) {
+            sb.append(line).append("\n");
+            line = br.readLine();
+        }
+        String fileAsString = sb.toString();
+        String newString = fileAsString.substring(0, fileAsString.length() - 1);
+        System.out.println(newString.substring(newString.length()-1));
+        br.close();
+        return newString;
     }
 
     public static void main(String[] args)  // don't need to implement this
