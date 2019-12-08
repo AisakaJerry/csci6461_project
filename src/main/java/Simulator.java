@@ -10,6 +10,7 @@ public class Simulator {
     public static String[] memory = new String[2048]; //Memory of 2048 words
     public static String[] indexRegister = new String[3]; //3 Index Registers
     public static String[] gpr = new String[4]; //4 General Purpose Registers
+    public static String[] fr = new String[2]; // 2 Floating Point Registers
     public static String[] IPL = new String[5]; // Instructions preloaded
     public static String mar = "0000000000000000";
     public static String mbr = "0000000000000000";
@@ -27,6 +28,7 @@ public class Simulator {
     public static int opcode;
     public static int indexNumber;
     public static int gprNumber;
+    public static int frNumber;
     public static int indirect;
     public static int address;
     public static int DevID;
@@ -34,6 +36,9 @@ public class Simulator {
     public static int AOrL;
     public static int LOrR;
     public static int count;
+    public static int signBit;
+    public static int exponent;
+    public static int mantissa;
 
     /*Find effective address*/
     public static int FindEA(String ins)
@@ -139,11 +144,16 @@ public class Simulator {
     public static void execInst(String inst) {
 	    opcode = bToD(inst.substring(0, 6));
 	    gprNumber = bToD(inst.substring(6, 8));
+	    frNumber = bToD(inst.substring(6,8));
 	    indexNumber = bToD(inst.substring(8, 10));
 	    indirect = bToD(inst.substring(10, 11));
 	    address = bToD(inst.substring(11, 16));
 	    immed = inst.substring(11, 16);
 	    DevID = bToD(inst.substring(12, 16));
+	    signBit = bToD(inst.substring(0, 1));
+	    exponent = bToD(inst.substring(1, 8));
+	    mantissa = bToD(inst.substring(8,16));
+
 	    System.out.println(inst);
 	    switch(opcode) {
 		    case InstType.LDR:
@@ -232,6 +242,27 @@ public class Simulator {
                 break;
             case InstType.HLT:
                 HLT(inst);
+                break;
+            case InstType.FADD:
+                FADD(inst);
+                break;
+            case InstType.FSUB:
+                FSUB(inst);
+                break;
+            case InstType.VADD:
+                VADD(inst);
+                break;
+            case InstType.VSUB:
+                VSUB(inst);
+                break;
+            case InstType.CNVRT:
+                CNVRT(inst);
+                break;
+            case InstType.LDFR:
+                LDFR(inst);
+                break;
+            case InstType.STFR:
+                STFR(inst);
                 break;
 	    }
 	    if (!((opcode >= 10)&&(opcode <= 17))) {
@@ -686,6 +717,235 @@ public class Simulator {
         // Do nothing
     }
 
+    /*FADD Instruction: Floating Add Memory To Register*/
+    public static void FADD(String ins) {
+        int address, exp, man, sign;
+        address = FindEA(ins);
+        sign = bToD(memory[address].substring(0,1));
+        exp = bToD(memory[address].substring(1,8));
+        man = bToD(memory[address].substring(8,16));
+
+        if(indirect == 0) {
+            if(sign == 0){
+                exponent = exponent + exp;
+                mantissa = mantissa + man;
+            }
+            else{
+                exponent = exponent - exp;
+                mantissa = mantissa - man;
+            }
+        }
+        else {
+            sign = bToD(memory[signB2D(memory[address])].substring(0,1));
+            exp = bToD(memory[signB2D(memory[address])].substring(1,8));
+            man = bToD(memory[signB2D(memory[address])].substring(8,16));
+            if(sign == 0){
+                exponent = exponent + exp;
+                mantissa = mantissa + man;
+            }
+            else{
+                exponent = exponent - exp;
+                mantissa = mantissa - man;
+            }
+        }
+    }
+
+    /*FSUB Instruction: Floating Subtract Memory From Register*/
+    public static void FSUB(String ins) {
+        int address, exp, man, sign;
+        address = FindEA(ins);
+        sign = bToD(memory[address].substring(0,1));
+        exp = bToD(memory[address].substring(1,8));
+        man = bToD(memory[address].substring(8,16));
+
+        if(indirect == 0) {
+            if(sign == 0){
+                exponent = exponent - exp;
+                mantissa = mantissa - man;
+            }
+            else{
+                exponent = exponent + exp;
+                mantissa = mantissa + man;
+            }
+        }
+        else {
+            sign = bToD(memory[signB2D(memory[address])].substring(0,1));
+            exp = bToD(memory[signB2D(memory[address])].substring(1,8));
+            man = bToD(memory[signB2D(memory[address])].substring(8,16));
+            if(sign == 0){
+                exponent = exponent - exp;
+                mantissa = mantissa - man;
+            }
+            else{
+                exponent = exponent + exp;
+                mantissa = mantissa + man;
+            }
+        }
+    }
+
+    /*VADD Instruction: Vector Add*/
+    public static void VADD(String ins) {
+        int address, signV1, expV1, manV1;
+        int signV2, expV2, manV2;
+        address = FindEA(ins);
+        if(indirect == 0) {
+            int v1 = signB2D(memory[address]);
+            int v2 = v1+1;
+            for(int i = 0; i < signB2D(memory[frNumber]); i++) {
+                signV1 = bToD(memory[v1+i].substring(0,1));
+                expV1 =  bToD(memory[v1+i].substring(1,8));
+                manV1 = bToD(memory[v1+i].substring(8,16));
+                signV2 = bToD(memory[v1+i].substring(0,1));
+                expV2 =  bToD(memory[v1+i].substring(1,8));
+                manV2 = bToD(memory[v1+i].substring(8,16));
+                if(signV2 == 0){
+                    signV1 = signV1 + signV2;
+                    expV1 = expV1 + expV2;
+                    manV1 = manV1 + manV2;
+                }
+                else{
+                    signV1 = signV1 - signV2;
+                    expV1 = expV1 - expV2;
+                    manV1 = manV1 - manV2;
+                }
+                memory[v1+i] = ext216(dToB(signV1) + dToB(expV1) + dToB(manV1));
+            }
+        }
+        else {
+            int v1 = signB2D(memory[signB2D(memory[address])]);
+            int v2 = v1+1;
+            for(int i = 0; i < signB2D(memory[frNumber]); i++) {
+                signV1 = bToD(memory[signB2D(memory[v1+i])].substring(0,1));
+                expV1 =  bToD(memory[signB2D(memory[v1+i])].substring(1,8));
+                manV1 = bToD(memory[signB2D(memory[v1+i])].substring(8,16));
+                signV2 = bToD(memory[signB2D(memory[v1+i])].substring(0,1));
+                expV2 =  bToD(memory[signB2D(memory[v1+i])].substring(1,8));
+                manV2 = bToD(memory[signB2D(memory[v1+i])].substring(8,16));
+                if(signV2 == 0){
+                    signV1 = signV1 + signV2;
+                    expV1 = expV1 + expV2;
+                    manV1 = manV1 + manV2;
+                }
+                else{
+                    signV1 = signV1 - signV2;
+                    expV1 = expV1 - expV2;
+                    manV1 = manV1 - manV2;
+                }
+                memory[signB2D(memory[v1+i])] = ext216(dToB(signV1) + dToB(expV1) + dToB(manV1));
+            }
+        }
+    }
+
+    public static void VSUB(String ins) {
+        int address, signV1, expV1, manV1;
+        int signV2, expV2, manV2;
+        address = FindEA(ins);
+        if(indirect == 0) {
+            int v1 = signB2D(memory[address]);
+            int v2 = v1+1;
+            for(int i = 0; i < signB2D(memory[frNumber]); i++) {
+                signV1 = bToD(memory[v1+i].substring(0,1));
+                expV1 =  bToD(memory[v1+i].substring(1,8));
+                manV1 = bToD(memory[v1+i].substring(8,16));
+                signV2 = bToD(memory[v1+i].substring(0,1));
+                expV2 =  bToD(memory[v1+i].substring(1,8));
+                manV2 = bToD(memory[v1+i].substring(8,16));
+                if(signV2 == 0){
+                    signV1 = signV1 - signV2;
+                    expV1 = expV1 - expV2;
+                    manV1 = manV1 - manV2;
+                }
+                else{
+                    signV1 = signV1 + signV2;
+                    expV1 = expV1 + expV2;
+                    manV1 = manV1 + manV2;
+                }
+                memory[v1+i] = ext216(dToB(signV1) + dToB(expV1) + dToB(manV1));
+            }
+        }
+        else {
+            int v1 = signB2D(memory[signB2D(memory[address])]);
+            int v2 = v1+1;
+            for(int i = 0; i < signB2D(memory[frNumber]); i++) {
+                signV1 = bToD(memory[signB2D(memory[v1+i])].substring(0,1));
+                expV1 =  bToD(memory[signB2D(memory[v1+i])].substring(1,8));
+                manV1 = bToD(memory[signB2D(memory[v1+i])].substring(8,16));
+                signV2 = bToD(memory[signB2D(memory[v1+i])].substring(0,1));
+                expV2 =  bToD(memory[signB2D(memory[v1+i])].substring(1,8));
+                manV2 = bToD(memory[signB2D(memory[v1+i])].substring(8,16));
+                if(signV2 == 0){
+                    signV1 = signV1 - signV2;
+                    expV1 = expV1 - expV2;
+                    manV1 = manV1 - manV2;
+                }
+                else{
+                    signV1 = signV1 + signV2;
+                    expV1 = expV1 + expV2;
+                    manV1 = manV1 + manV2;
+                }
+                memory[signB2D(memory[v1+i])] = ext216(dToB(signV1) + dToB(expV1) + dToB(manV1));
+            }
+        }
+    }
+
+    public static void CNVRT(String ins) {
+        int address, sign, exp, man, temp, F;
+        address = FindEA(ins);
+        temp = bToD(memory[address].substring(1,16));
+        sign = bToD(memory[address].substring(0,1));
+        F = bToD(gpr[gprNumber]);
+        if(F == 0) {
+            if(temp > 64){
+                exp = temp /10;
+                man = temp % 10;
+                gpr[gprNumber] = dToB(sign) + ext207(dToB(exp)) + ext208(dToB(man));
+            }
+            else{
+                gpr[gprNumber] = memory[address];
+            }
+        }
+        else {
+            if(temp > 64){
+                exp = temp /10;
+                man = temp % 10;
+                fr[0] = dToB(sign) + ext207(dToB(exp)) + ext208(dToB(man));
+            }
+            else{
+                fr[0] = memory[address];
+            }
+        }
+    }
+
+    public static void LDFR(String ins) {
+        int address;
+        String sign, exp, man;
+        address = FindEA(ins);
+        sign = fr[frNumber].substring(0,1);
+        if(indirect == 0) {
+            fr[frNumber] = sign + memory[address].substring(8) + memory[address+1].substring(8);
+        }
+        else {
+            fr[frNumber] = ext216(memory[signB2D(sign + memory[address].substring(8) + memory[address+1].substring(7))]);
+        }
+    }
+
+    public static void STFR(String ins) {
+        int address;
+        String sign, exp, man;
+        address = FindEA(ins);
+        sign = fr[frNumber].substring(0,1);
+        exp = fr[frNumber].substring(1,8);
+        man = fr[frNumber].substring(8,15);
+        if(indirect == 0) {
+            memory[address] = ext216(exp);
+            memory[address+1] = ext216(man);
+        }
+        else {
+            memory[signB2D(memory[address])] = ext216(exp);
+            memory[signB2D(memory[address+1])] = ext216(man);
+        }
+    }
+
     /*binary to decimal*/
     public static int bToD(String bi)
     {
@@ -745,6 +1005,26 @@ public class Simulator {
         int len = s.length();
         if (len < 12) {
             for (int i = 0; i < 12 - len; i++) {
+                s = "0" + s;
+            }
+        }
+        return s;
+    }
+
+    public static String ext207(String s) {
+        int len = s.length();
+        if (len < 7) {
+            for (int i = 0; i < 7 - len; i++) {
+                s = "0" + s;
+            }
+        }
+        return s;
+    }
+
+    public static String ext208(String s) {
+        int len = s.length();
+        if (len < 8) {
+            for (int i = 0; i < 8 - len; i++) {
                 s = "0" + s;
             }
         }
@@ -814,4 +1094,11 @@ class InstType {
     public static final int IN = 61; //Input Character To Register from Device
     public static final int OUT = 62; //Output Character to Device from Register
     public static final int CHK = 63; //Check Device Status to Register
+    public static final int FADD = 33; //Floating Add Memory To Register
+    public static final int FSUB = 34; //Floating Subtract Memory From Register
+    public static final int VADD = 35; //Vector Add
+    public static final int VSUB = 36; //Vector Subtract
+    public static final int CNVRT = 37; //Convert to Fixed/FloatingPoint
+    public static final int LDFR = 50; //Load Floating Register From Memory
+    public static final int STFR = 51; //Store Floating Register to Memory
 }
