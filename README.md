@@ -1,6 +1,7 @@
 # CSCI6461 Computer Simulator
 
 > Author: Zeyuan Feng; Pranay Patodi; Zhen Wang (Sorted by last name)
+Disclaimer: Please do not use the code on class project without reference!
 
 ## Environment and Prerequisite
 
