@@ -1,12 +1,15 @@
 # CSCI6461 Computer Simulator
 
 > Author: Zeyuan Feng; Pranay Patodi; Zhen Wang (Sorted by last name)
-Disclaimer: Please do not use the code on class project without reference!
+
+> Disclaimer: Please do not use the code on class project without reference!
 
 ## Environment and Prerequisite
 
 IDE:      JetBrains Intellij IDEA
+
 JDK:      JDK-13
+
 Plug-in:  JFormDesigner
 
 ## Part I Deliverable (See syllabus: (Part I – 5 points)
